@@ -1,0 +1,30 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "excursions": "Private Excursions",
+    "scubaDiving": "Diving & Snorkeling",
+    "about": "About",
+    "blog": "Journal",
+    "faq": "FAQ",
+    "contact": "Concierge",
+    "bookNow": "Reserve"
+  },
+  "Footer": {
+    "excursions": "Private Excursions",
+    "company": "Company",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cancellationPolicy": "Cancellation Policy"
+  },
+  "scubaDiving": {
+    "sectionHeading": "Private Diving Charters",
+    "sectionSubheading": "Private boats, certified guides, and the most exclusive sites on the coast",
+    "from": "From",
+    "perPerson": "Per Person",
+    "viewDetails": "View Details",
+    "noExcursions": "No charters found",
+    "noExcursionsMessage": "No private charters are listed at the moment. Please contact our concierge.",
+    "featured": "Featured"
+  }
+}

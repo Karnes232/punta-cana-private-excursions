@@ -1,0 +1,30 @@
+{
+  "Navigation": {
+    "home": "Inicio",
+    "excursions": "Excursiones Privadas",
+    "scubaDiving": "Buceo y Snorkel",
+    "about": "Sobre Nosotros",
+    "blog": "Revista",
+    "faq": "Preguntas Frecuentes",
+    "contact": "Conserjería",
+    "bookNow": "Reservar"
+  },
+  "Footer": {
+    "excursions": "Excursiones Privadas",
+    "company": "Empresa",
+    "contact": "Contacto",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio",
+    "cancellationPolicy": "Política de Cancelación"
+  },
+  "scubaDiving": {
+    "sectionHeading": "Charters Privados de Buceo",
+    "sectionSubheading": "Embarcaciones privadas, guías certificados y los sitios más exclusivos de la costa",
+    "from": "Desde",
+    "perPerson": "Por Persona",
+    "viewDetails": "Ver Detalles",
+    "noExcursions": "No se encontraron charters",
+    "noExcursionsMessage": "No hay charters privados disponibles en este momento. Por favor, contacta a nuestra conserjería.",
+    "featured": "Destacado"
+  }
+}

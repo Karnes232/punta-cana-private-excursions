@@ -6,21 +6,42 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
+    "seed": "tsx src/sanity/seed/seedAll.ts"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^9.2.0",
+    "@portabletext/react": "^6.2.0",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.0.8",
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.25.1",
+    "date-fns": "^4.1.0",
     "next": "16.2.6",
+    "next-intl": "^4.9.0",
+    "next-sanity": "^12.4.5",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-day-picker": "^9.14.0",
+    "react-dom": "19.2.4",
+    "react-social-icons": "^6.25.0",
+    "resend": "^6.12.3",
+    "sanity": "^5.25.1",
+    "sanity-plugin-media": "^4.3.0",
+    "styled-components": "^6.4.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^16.4.5",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "prettier": "3.8.1",
     "tailwindcss": "^4",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

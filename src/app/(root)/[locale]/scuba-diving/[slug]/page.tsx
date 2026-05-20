@@ -226,6 +226,10 @@ export default async function DivingDetail({
             maxGuests={exc.maxGuests}
             pickupTime={exc.pickupTime?.[lk]}
             excursionTitle={title}
+            excursionId={exc._id}
+            daysAvailable={[]}
+            timeSlots={[]}
+            bookingNoticeHours={24}
           />
         </div>
       </section>

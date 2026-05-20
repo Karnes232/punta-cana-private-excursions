@@ -235,6 +235,12 @@ export default async function ExcursionDetail({
             maxGuests={excursion.maxGuests}
             pickupTime={excursion.pickupTime?.[lk]}
             excursionTitle={title}
+            excursionId={excursion._id}
+            daysAvailable={excursion.daysAvailable ?? []}
+            timeSlots={excursion.timeSlots ?? []}
+            bookingNoticeHours={excursion.bookingNoticeHours ?? 24}
+            childPrice={excursion.childPrice}
+            childAgeRange={excursion.childAgeRange?.[lk]}
           />
         </div>
       </section>

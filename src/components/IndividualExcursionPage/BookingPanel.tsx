@@ -1,4 +1,5 @@
-import { Link } from "@/i18n/navigation";
+import { BookNowButton } from "./Booking/BookNowButton";
+import { ConciergeButton } from "./Booking/ConciergeButton";
 
 interface BookingPanelProps {
   locale: "en" | "es";
@@ -10,6 +11,12 @@ interface BookingPanelProps {
   maxGuests?: number | null;
   pickupTime?: string;
   excursionTitle: string;
+  excursionId: string;
+  daysAvailable: string[];
+  timeSlots: string[];
+  bookingNoticeHours: number;
+  childPrice?: number;
+  childAgeRange?: string;
 }
 
 export function BookingPanel({
@@ -22,13 +29,17 @@ export function BookingPanel({
   maxGuests,
   pickupTime,
   excursionTitle,
+  excursionId,
+  daysAvailable,
+  timeSlots,
+  bookingNoticeHours,
+  childPrice,
+  childAgeRange,
 }: BookingPanelProps) {
   const isEs = locale === "es";
-  const inquiryHref = `/contact?excursion=${encodeURIComponent(excursionTitle)}`;
-  const waText = encodeURIComponent(
-    isEs
-      ? `Hola, me interesa reservar la experiencia privada: ${excursionTitle}.`
-      : `Hi, I'd like to book the private experience: ${excursionTitle}.`,
+
+  const canBookOnline = Boolean(
+    deposit && deposit > 0 && daysAvailable && daysAvailable.length > 0,
   );
 
   return (
@@ -89,26 +100,28 @@ export function BookingPanel({
         )}
       </div>
 
-      <Link href={inquiryHref} className="btn-primary w-full text-center mb-3">
-        {isEs ? "Solicitar conserjería" : "Request via concierge"}
-      </Link>
-      <a
-        href={`https://wa.me/?text=${waText}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex w-full items-center justify-center gap-2 px-6 py-3 rounded-full bg-whatsapp text-white font-heading font-semibold text-sm shadow-sm hover:bg-whatsapp-dark transition-colors"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.52 3.48A11.85 11.85 0 0 0 12.06 0C5.5 0 .17 5.32.17 11.86c0 2.09.55 4.13 1.6 5.93L0 24l6.4-1.68a11.83 11.83 0 0 0 5.66 1.44h.01c6.55 0 11.88-5.32 11.88-11.86a11.8 11.8 0 0 0-3.43-8.42Z" />
-        </svg>
-        {isEs ? "WhatsApp" : "Message on WhatsApp"}
-      </a>
+      {canBookOnline && deposit ? (
+        <div className="mb-3">
+          <BookNowButton
+            locale={locale}
+            excursionId={excursionId}
+            excursionTitle={excursionTitle}
+            daysAvailable={daysAvailable}
+            timeSlots={timeSlots}
+            bookingNoticeHours={bookingNoticeHours}
+            depositAmount={deposit}
+            pricePerPerson={price}
+            childPrice={childPrice}
+            childAgeRange={childAgeRange}
+          />
+        </div>
+      ) : null}
 
-      <p className="mt-5 text-xs text-gray-dark text-center italic">
-        {isEs
-          ? "Reserva instantánea por PayPal próximamente."
-          : "Instant PayPal booking coming soon."}
-      </p>
+      <ConciergeButton
+        locale={locale}
+        excursionTitle={excursionTitle}
+        variant={canBookOnline ? "secondary" : "primary"}
+      />
     </aside>
   );
 }

@@ -43,7 +43,7 @@ export function BookingPanel({
   );
 
   return (
-    <aside className="relative lg:sticky lg:top-28 bg-white border border-sand-dark rounded-2xl shadow-card p-7">
+    <aside className="relative lg:sticky lg:top-28 lg:self-start bg-white border border-sand-dark rounded-2xl shadow-card p-7">
       <p className="text-[11px] font-heading font-semibold uppercase tracking-[0.18em] text-sunset mb-2">
         {isEs ? "Reserva privada" : "Private reservation"}
       </p>

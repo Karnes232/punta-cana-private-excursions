@@ -80,6 +80,16 @@ export default async function Home({ params }: HomeProps) {
               }
             : undefined
         }
+        video={
+          homePage?.heroVideoPublicId
+            ? {
+                publicId: homePage.heroVideoPublicId,
+                posterUrl:
+                  homePage.heroVideoPoster?.asset?.url ??
+                  homePage.heroImage?.asset?.url,
+              }
+            : undefined
+        }
         headline={homePage?.heroHeadline?.[lk]}
         subheadline={homePage?.heroSubheadline?.[lk]}
         primaryCTA={

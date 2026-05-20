@@ -4,12 +4,18 @@ import {
   hotspotToObjectPosition,
   type SanityHotspot,
 } from "@/sanity/lib/hotspot";
+import { cloudinaryVideoUrl } from "@/lib/cloudinary";
 
 interface HeroImage {
   url: string;
   alt: string;
   lqip?: string;
   hotspot?: SanityHotspot | null;
+}
+
+interface HeroVideo {
+  publicId: string;
+  posterUrl?: string;
 }
 
 interface HeroCta {
@@ -19,6 +25,7 @@ interface HeroCta {
 
 interface HeroProps {
   backgroundImage?: HeroImage;
+  video?: HeroVideo;
   eyebrow?: string;
   headline?: string;
   subheadline?: string;
@@ -28,6 +35,7 @@ interface HeroProps {
 
 export function Hero({
   backgroundImage,
+  video,
   eyebrow = "VIP · Punta Cana",
   headline,
   subheadline,
@@ -35,10 +43,11 @@ export function Hero({
   secondaryCTA,
 }: HeroProps) {
   const hasImage = Boolean(backgroundImage?.url);
+  const videoUrl = cloudinaryVideoUrl(video?.publicId);
 
   return (
     <section className="relative isolate min-h-[88vh] flex items-end overflow-hidden">
-      {/* Background */}
+      {/* Poster / fallback image (also shown under prefers-reduced-motion) */}
       {hasImage ? (
         <Image
           src={backgroundImage!.url}
@@ -48,11 +57,27 @@ export function Hero({
           sizes="100vw"
           placeholder={backgroundImage?.lqip ? "blur" : undefined}
           blurDataURL={backgroundImage?.lqip}
-          className="object-cover -z-10"
+          className="object-cover -z-20"
           style={{ objectPosition: hotspotToObjectPosition(backgroundImage?.hotspot) }}
         />
       ) : (
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-ocean via-ocean-dark to-slate-dark" />
+        <div className="absolute inset-0 -z-20 bg-gradient-to-br from-ocean via-ocean-dark to-slate-dark" />
+      )}
+
+      {/* Autoplay hero video (hidden for reduced-motion users) */}
+      {videoUrl && (
+        <video
+          src={videoUrl}
+          poster={video?.posterUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover motion-safe:block motion-reduce:hidden"
+          style={{ zIndex: -15 }}
+        />
       )}
 
       {/* Overlay */}

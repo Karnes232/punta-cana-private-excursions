@@ -44,6 +44,25 @@ export const homePage = defineType({
     }),
 
     defineField({
+      name: "heroVideoPublicId",
+      title: "Hero Video (Cloudinary Public ID)",
+      type: "string",
+      description:
+        'Optional. Cloudinary public ID for an autoplay/muted/looping hero video (e.g. "excursions/hero-loop"). Leave empty to use the hero image only. Keep clips short (6–12s), silent, 1920×1080 landscape, ≤ 3MB after Cloudinary optimization.',
+      group: "hero",
+    }),
+
+    defineField({
+      name: "heroVideoPoster",
+      title: "Hero Video Poster (optional)",
+      type: "image",
+      description:
+        "First-frame poster shown before the video loads and to visitors with reduced-motion enabled. If empty, the Hero Image is used as the poster.",
+      options: { hotspot: true },
+      group: "hero",
+    }),
+
+    defineField({
       name: "heroHeadline",
       title: "Hero Headline",
       type: "localizedString",

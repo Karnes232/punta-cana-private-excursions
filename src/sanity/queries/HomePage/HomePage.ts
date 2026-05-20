@@ -55,6 +55,17 @@ export interface HomePage {
     crop?: { top: number; bottom: number; left: number; right: number };
   };
   heroImageAlt: LocalizedField;
+  heroVideoPublicId?: string;
+  heroVideoPoster?: {
+    asset?: {
+      url?: string;
+      metadata?: {
+        lqip?: string;
+      };
+    };
+    hotspot?: { x: number; y: number };
+    crop?: { top: number; bottom: number; left: number; right: number };
+  };
   heroHeadline: LocalizedField;
   heroSubheadline: LocalizedField;
   heroPrimaryCta: {
@@ -140,6 +151,17 @@ export const homePageQuery = `*[_type == "homePage"][0] {
         crop
     },
     heroImageAlt,
+    heroVideoPublicId,
+    heroVideoPoster {
+        asset-> {
+            url,
+            metadata {
+                lqip
+            }
+        },
+        hotspot,
+        crop
+    },
     heroHeadline,
     heroSubheadline,
     heroPrimaryCta {

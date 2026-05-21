@@ -71,7 +71,6 @@ export function Hero({
           poster={video?.posterUrl}
           autoPlay
           muted
-          loop
           playsInline
           preload="metadata"
           aria-hidden="true"

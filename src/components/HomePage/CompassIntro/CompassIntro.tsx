@@ -206,9 +206,11 @@ export function CompassIntro({ locale, logoUrl }: CompassIntroProps) {
         {logoUrl && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={logoUrl}
+            src={`${logoUrl}?w=320&auto=format`}
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            fetchPriority="low"
             className="compass-intro__logo"
           />
         )}
@@ -335,8 +337,8 @@ export function CompassIntro({ locale, logoUrl }: CompassIntroProps) {
           animation: compass-fade 0.6s ease-out 2.8s forwards;
         }
         .compass-intro__logo {
-          margin-top: 32px;
-          width: 80px;
+          margin-top: 40px;
+          width: 160px;
           height: auto;
           opacity: 0;
           filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
@@ -374,7 +376,7 @@ export function CompassIntro({ locale, logoUrl }: CompassIntroProps) {
             letter-spacing: 0.25em;
           }
           .compass-intro__logo {
-            width: 64px;
+            width: 120px;
           }
         }
       `}</style>

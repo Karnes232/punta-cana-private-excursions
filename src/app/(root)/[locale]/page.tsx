@@ -10,11 +10,13 @@ import { HowBookingWorks } from "@/components/HomePage/HowBookingWorks/HowBookin
 import { Reviews } from "@/components/HomePage/Reviews/Reviews";
 import { FaqPreview } from "@/components/HomePage/FaqPreview/FaqPreview";
 import { CtaBanner } from "@/components/HomePage/CtaBanner/CtaBanner";
+import { CompassIntro } from "@/components/HomePage/CompassIntro/CompassIntro";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getHomePage, getHomePageSeo } from "@/sanity/queries/HomePage/HomePage";
 import { getExcursionCategoryHomePage } from "@/sanity/queries/ExcursionCategory/ExcursionCategory";
 import { getFeaturedExcursions } from "@/sanity/queries/IndividualExcursions/Excursionqueries";
 import {
+  getGeneralLayout,
   getLocalized,
   type LocalizedField,
 } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
@@ -52,12 +54,14 @@ export async function generateMetadata({
 export default async function Home({ params }: HomeProps) {
   const { locale } = await params;
   const lk = locale as keyof LocalizedField;
+  const typedLocale = locale as "en" | "es";
 
-  const [homePage, categories, featured, pageSeo] = await Promise.all([
+  const [homePage, categories, featured, pageSeo, generalLayout] = await Promise.all([
     getHomePage().catch(() => null),
     getExcursionCategoryHomePage().catch(() => []),
     getFeaturedExcursions().catch(() => []),
     getHomePageSeo().catch(() => null),
+    getGeneralLayout().catch(() => null),
   ]);
 
   const jsonLd =
@@ -67,6 +71,11 @@ export default async function Home({ params }: HomeProps) {
 
   return (
     <>
+      <CompassIntro
+        locale={typedLocale}
+        logoUrl={generalLayout?.logo?.asset?.url}
+      />
+
       <JsonLd data={jsonLd} />
 
       <Hero

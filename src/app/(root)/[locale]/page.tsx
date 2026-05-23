@@ -91,12 +91,17 @@ export default async function Home({ params }: HomeProps) {
         }
         video={
           homePage?.heroVideoPublicId
-            ? {
-                publicId: homePage.heroVideoPublicId,
-                posterUrl:
+            ? (() => {
+                const rawPoster =
                   homePage.heroVideoPoster?.asset?.url ??
-                  homePage.heroImage?.asset?.url,
-              }
+                  homePage.heroImage?.asset?.url;
+                return {
+                  publicId: homePage.heroVideoPublicId,
+                  posterUrl: rawPoster
+                    ? `${rawPoster}?w=750&fm=webp&q=80`
+                    : undefined,
+                };
+              })()
             : undefined
         }
         headline={homePage?.heroHeadline?.[lk]}

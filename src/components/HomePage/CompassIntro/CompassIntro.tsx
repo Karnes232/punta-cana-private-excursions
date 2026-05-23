@@ -206,7 +206,7 @@ export function CompassIntro({ locale, logoUrl }: CompassIntroProps) {
         {logoUrl && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`${logoUrl}?w=320&auto=format`}
+            src={`${logoUrl}?w=240&auto=format`}
             alt=""
             aria-hidden="true"
             loading="lazy"

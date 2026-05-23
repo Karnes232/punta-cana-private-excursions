@@ -54,6 +54,7 @@ export function Hero({
           alt={backgroundImage!.alt ?? ""}
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           placeholder={backgroundImage?.lqip ? "blur" : undefined}
           blurDataURL={backgroundImage?.lqip}
@@ -72,7 +73,7 @@ export function Hero({
           autoPlay
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover motion-safe:block motion-reduce:hidden"
           style={{ zIndex: -15 }}

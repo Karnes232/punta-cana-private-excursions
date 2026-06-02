@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { generateHreflangAlternates } from "@/i18n/hreflang";
-import { SITE_URL } from "@/lib/seo/constants";
+import { generateHreflangAlternates, localizedUrl } from "@/i18n/hreflang";
+import type { AppHref } from "@/i18n/navigation";
 import { getLocalized } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import type {
   SeoData,
@@ -21,8 +21,12 @@ interface BuildMetadataArgs {
   seo: SeoData | null | undefined;
   defaults: SeoData | null | undefined;
   locale: Locale;
-  /** Path WITHOUT the locale prefix, e.g. "/excursions/foo" or "/" */
-  path: string;
+  /**
+   * Localized-navigation href for this page: a route key like "/excursions",
+   * or `{ pathname: "/excursions/[slug]", params: { slug } }` for slug routes.
+   * Used to build the canonical + hreflang URLs with localized segments/slugs.
+   */
+  href: AppHref;
   fallbackTitle?: string;
   fallbackDescription?: string;
   fallbackImage?: FallbackImage | null;
@@ -32,7 +36,7 @@ interface BuildSingleLanguageMetadataArgs {
   seo: SeoSingleLanguageData | null | undefined;
   defaults: SeoData | null | undefined;
   locale: Locale;
-  path: string;
+  href: AppHref;
   fallbackTitle?: string;
   fallbackDescription?: string;
   fallbackImage?: FallbackImage | null;
@@ -72,7 +76,7 @@ const robotsFromSeo = (
  * with fallbacks to defaultSeo (generalLayout) and per-page hardcoded fallbacks.
  */
 export function buildMetadata(args: BuildMetadataArgs): Metadata {
-  const { seo, defaults, locale, path, fallbackTitle, fallbackDescription, fallbackImage } = args;
+  const { seo, defaults, locale, href, fallbackTitle, fallbackDescription, fallbackImage } = args;
 
   const title = firstNonEmpty(
     getLocalized(seo?.metaTitle, locale),
@@ -106,10 +110,8 @@ export function buildMetadata(args: BuildMetadataArgs): Metadata {
     (fallbackImage ?? undefined) ??
     seoImageToFallback(defaults?.ogImage);
 
-  const alternates = generateHreflangAlternates(locale, path);
-  const canonical = locale === "es"
-    ? `${SITE_URL}${path === "/" ? "/es" : `/es${path}`}`
-    : `${SITE_URL}${path}`;
+  const alternates = generateHreflangAlternates(href);
+  const canonical = localizedUrl(href, locale);
 
   const twitterCard = seo?.twitterCard ?? defaults?.twitterCard ?? "summary_large_image";
 
@@ -155,7 +157,7 @@ export function buildMetadata(args: BuildMetadataArgs): Metadata {
 export function buildSingleLanguageMetadata(
   args: BuildSingleLanguageMetadataArgs,
 ): Metadata {
-  const { seo, defaults, locale, path, fallbackTitle, fallbackDescription, fallbackImage } = args;
+  const { seo, defaults, locale, href, fallbackTitle, fallbackDescription, fallbackImage } = args;
 
   const title = firstNonEmpty(
     seo?.metaTitle,
@@ -182,10 +184,8 @@ export function buildSingleLanguageMetadata(
     (fallbackImage ?? undefined) ??
     seoImageToFallback(defaults?.ogImage);
 
-  const alternates = generateHreflangAlternates(locale, path);
-  const canonical = locale === "es"
-    ? `${SITE_URL}${path === "/" ? "/es" : `/es${path}`}`
-    : `${SITE_URL}${path}`;
+  const alternates = generateHreflangAlternates(href);
+  const canonical = localizedUrl(href, locale);
 
   const twitterCard = seo?.twitterCard ?? defaults?.twitterCard ?? "summary_large_image";
 

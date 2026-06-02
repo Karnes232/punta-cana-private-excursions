@@ -1,5 +1,10 @@
 import { client } from "@/sanity/lib/client";
 import {
+  SLUG_MATCH,
+  SLUG_PROJECTION,
+  type LocalizedSlug,
+} from "@/sanity/lib/resolveSlug";
+import {
   LocalizedBlockContent,
   LocalizedField,
   LocalizedStringArray,
@@ -33,6 +38,7 @@ export interface RelatedDivingExcursion {
   _id: string;
   title: LocalizedField;
   slug: { current: string };
+  localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   price: number;
   duration: LocalizedField;
@@ -55,6 +61,7 @@ export interface IndividualDivingExcursion {
   // Content
   title: LocalizedField;
   slug: { current: string };
+  localizedSlug?: LocalizedSlug | null;
   externalBookingUrl: string;
   shortSummary: LocalizedField;
   badge: LocalizedField | null;
@@ -112,18 +119,19 @@ export interface IndividualDivingExcursion {
 }
 
 export interface DivingExcursionSlug {
-  slug: string;
+  en: string;
+  es: string;
 }
 
 // =============================================================================
 // Queries
 // =============================================================================
 
-export const individualDivingExcursionQuery = `*[_type == "divingExcursion" && slug.current == $slug][0] {
+export const individualDivingExcursionQuery = `*[_type == "divingExcursion" && ${SLUG_MATCH}][0] {
   _id,
   _type,
   title,
-  slug,
+  ${SLUG_PROJECTION},
   externalBookingUrl,
   shortSummary,
   badge,
@@ -169,6 +177,7 @@ export const individualDivingExcursionQuery = `*[_type == "divingExcursion" && s
     _id,
     title,
     slug,
+    localizedSlug,
     shortSummary,
     price,
     duration,
@@ -182,8 +191,9 @@ export const individualDivingExcursionQuery = `*[_type == "divingExcursion" && s
   seo
 }`;
 
-export const divingExcursionSlugsQuery = `*[_type == "divingExcursion" && defined(slug.current)] {
-  "slug": slug.current
+export const divingExcursionSlugsQuery = `*[_type == "divingExcursion" && (defined(slug.current) || defined(localizedSlug.en.current))] {
+  "en": coalesce(localizedSlug.en.current, slug.current),
+  "es": coalesce(localizedSlug.es.current, localizedSlug.en.current, slug.current)
 }`;
 
 // =============================================================================
@@ -206,7 +216,7 @@ export async function getDivingExcursionSlugs(): Promise<DivingExcursionSlug[]> 
 
 import { seoProjection, type SeoData } from "../SEO/seoProjection";
 
-export const divingExcursionSeoQuery = `*[_type == "divingExcursion" && slug.current == $slug][0]{
+export const divingExcursionSeoQuery = `*[_type == "divingExcursion" && ${SLUG_MATCH}][0]{
   "seo": seo { ${seoProjection} }
 }`;
 

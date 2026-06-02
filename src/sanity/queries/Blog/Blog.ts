@@ -120,6 +120,12 @@ const translationsQuery = /* groq */ `*[
 
 const slugsQuery = /* groq */ `*[_type == "blogArticle"] { "slug": slug.current }`;
 
+const slugsByLanguageQuery = /* groq */ `*[_type == "blogArticle" && language == $language && defined(slug.current)] { "slug": slug.current }`;
+
+const sitemapEntriesQuery = /* groq */ `*[_type == "blogArticle" && language in ["en", "es"] && defined(slug.current)] {
+  "slug": slug.current, language, translationGroup
+}`;
+
 const categoriesQuery = /* groq */ `*[_type == "blogCategory"] | order(sortOrder asc) {
   _id, "slug": slug.current, title, sortOrder
 }`;
@@ -160,6 +166,24 @@ export async function getBlogArticleTranslations(
 
 export async function getBlogArticleSlugs(): Promise<BlogSlug[]> {
   return client.fetch<BlogSlug[]>(slugsQuery);
+}
+
+export async function getBlogArticleSlugsByLanguage(
+  language: string,
+): Promise<BlogSlug[]> {
+  return client.fetch<BlogSlug[]>(slugsByLanguageQuery, { language });
+}
+
+export interface BlogSitemapEntry {
+  slug: string;
+  language: "en" | "es";
+  translationGroup?: string;
+}
+
+export async function getBlogArticleSitemapEntries(): Promise<
+  BlogSitemapEntry[]
+> {
+  return client.fetch<BlogSitemapEntry[]>(sitemapEntriesQuery);
 }
 
 // =============================================================================

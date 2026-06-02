@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
+import { Link, staticHref } from "@/i18n/navigation";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import {
@@ -64,7 +64,10 @@ export function FeaturedExcursions({
             {excursions.map((exc, i) => (
               <RevealOnScroll key={exc.slug} delayMs={i * 80}>
                 <Link
-                  href={`/excursions/${exc.slug}`}
+                  href={{
+                    pathname: "/excursions/[slug]",
+                    params: { slug: exc.slug },
+                  }}
                   className="group block card-excursion h-full"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -122,7 +125,7 @@ export function FeaturedExcursions({
 
         {viewAllText && excursions.length > 0 && (
           <div className="mt-14 text-center">
-            <Link href={viewAllHref} className="btn-secondary">
+            <Link href={staticHref(viewAllHref)} className="btn-secondary">
               {viewAllText}
             </Link>
           </div>

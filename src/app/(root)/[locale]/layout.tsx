@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { SITE_NAME, SITE_URL } from "@/lib/seo/constants";
 import { Navbar } from "@/components/Layout/Navbar/Navbar";
 import { Footer } from "@/components/Layout/Footer/Footer";
+import { LocaleSwitchProvider } from "@/components/Layout/LocaleSwitchContext";
 import { getGeneralLayout } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import { urlFor } from "@/sanity/lib/image";
 import "../../globals.css";
@@ -110,13 +111,15 @@ export default async function LocaleLayout({
     >
       <body className="antialiased min-h-screen flex flex-col bg-white">
         <NextIntlClientProvider locale={locale}>
-          <Navbar
-            locale={typedLocale}
-            logo={generalLayout?.logo}
-            navLinks={generalLayout?.navLinks}
-            navCtaButton={generalLayout?.navCtaButton}
-          />
-          <main className="flex-1">{children}</main>
+          <LocaleSwitchProvider>
+            <Navbar
+              locale={typedLocale}
+              logo={generalLayout?.logo}
+              navLinks={generalLayout?.navLinks}
+              navCtaButton={generalLayout?.navCtaButton}
+            />
+            <main className="flex-1">{children}</main>
+          </LocaleSwitchProvider>
           <Footer
             locale={typedLocale}
             logo={generalLayout?.logoAlt ?? generalLayout?.logo}

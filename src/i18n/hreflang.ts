@@ -1,31 +1,36 @@
+import { getPathname, type AppHref } from "@/i18n/navigation";
 import { SITE_URL } from "@/lib/seo/constants";
 
-export function generateHreflangUrls(
-  path: string,
+/**
+ * Build an absolute URL for a route in a given locale, using the localized
+ * pathname map (translated segments) and `as-needed` prefixing. `href` is a
+ * route key (e.g. "/excursions") or an object `{ pathname, params }` for
+ * `[slug]` routes.
+ */
+export function localizedUrl(
+  href: AppHref,
+  locale: "en" | "es",
   baseUrl: string = SITE_URL,
-): { en: string; es: string } {
-  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
-  const enPath = cleanPath;
-  const esPath = cleanPath ? `es/${cleanPath}` : "es";
-
-  return {
-    en: enPath ? `${baseUrl}/${enPath}` : baseUrl,
-    es: `${baseUrl}/${esPath}`,
-  };
+): string {
+  const path = getPathname({ href, locale });
+  return path === "/" ? baseUrl : `${baseUrl}${path}`;
 }
 
+/**
+ * hreflang alternates for a route across both locales, with `x-default` → en.
+ * Plug straight into Next.js `Metadata.alternates`.
+ */
 export function generateHreflangAlternates(
-  _currentLocale: "en" | "es",
-  path: string,
+  href: AppHref,
   baseUrl: string = SITE_URL,
 ) {
-  const urls = generateHreflangUrls(path, baseUrl);
-
+  const en = localizedUrl(href, "en", baseUrl);
+  const es = localizedUrl(href, "es", baseUrl);
   return {
     languages: {
-      en: urls.en,
-      es: urls.es,
-      "x-default": urls.en,
+      en,
+      es,
+      "x-default": en,
     },
   };
 }

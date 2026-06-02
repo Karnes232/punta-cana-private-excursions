@@ -31,12 +31,23 @@ export const excursion = defineType({
     }),
 
     defineField({
+      name: "localizedSlug",
+      title: "URL Slug (per language)",
+      type: "localizedSlug",
+      description:
+        "Localized URL identifiers. The English slug auto-generates from the English title; the Spanish slug from the Spanish title. Each can be edited independently.",
+      group: "content",
+      validation: (rule) => rule.required(),
+    }),
+
+    defineField({
       name: "slug",
-      title: "Slug",
+      title: "Slug (legacy)",
       type: "slug",
       description:
-        "URL-friendly identifier. Auto-generated from the English title.",
+        "Deprecated — superseded by the per-language URL slug above. Kept temporarily so old links keep resolving.",
       group: "content",
+      readOnly: true,
       options: {
         source: "title.en",
         maxLength: 96,
@@ -47,7 +58,6 @@ export const excursion = defineType({
             .replace(/[^\w-]+/g, "")
             .slice(0, 96),
       },
-      validation: (rule) => rule.required(),
     }),
 
     defineField({

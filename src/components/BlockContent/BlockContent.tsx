@@ -1,6 +1,6 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { Link } from "@/i18n/navigation";
+import { Link, staticHref } from "@/i18n/navigation";
 
 const components: PortableTextComponents = {
   block: {
@@ -82,7 +82,7 @@ const components: PortableTextComponents = {
       }
       return (
         <Link
-          href={href}
+          href={staticHref(href)}
           className="text-ocean underline decoration-ocean/30 hover:decoration-ocean transition-colors"
         >
           {children}

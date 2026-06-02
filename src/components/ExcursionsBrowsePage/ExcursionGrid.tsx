@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { ExcursionListItem } from "@/sanity/queries/IndividualExcursions/Excursionqueries";
 import { getLocalized } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
+import { canonicalSlug } from "@/sanity/lib/resolveSlug";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { hotspotToObjectPosition } from "@/sanity/lib/hotspot";
 
@@ -32,7 +33,10 @@ export function ExcursionGrid({ excursions, locale }: ExcursionGridProps) {
         return (
           <RevealOnScroll key={exc._id} delayMs={(i % 3) * 80}>
             <Link
-              href={`/excursions/${exc.slug.current}`}
+              href={{
+                pathname: "/excursions/[slug]",
+                params: { slug: canonicalSlug(exc, locale as "en" | "es") },
+              }}
               className="group block card-excursion h-full"
             >
               <div className="relative aspect-[4/3] overflow-hidden">

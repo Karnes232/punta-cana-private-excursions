@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { permanentRedirect } from "@/i18n/navigation";
+import { canonicalSlug } from "@/sanity/lib/resolveSlug";
+import { SetLocaleAlternates } from "@/components/Layout/LocaleSwitchContext";
 import {
   getIndividualDivingExcursion,
   getDivingExcursionSlugs,
@@ -20,9 +23,13 @@ import { BlockContent } from "@/components/BlockContent/BlockContent";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FaqPreview } from "@/components/HomePage/FaqPreview/FaqPreview";
 
-export async function generateStaticParams() {
+export async function generateStaticParams({
+  params,
+}: {
+  params: { locale: string };
+}) {
   const slugs = await getDivingExcursionSlugs().catch(() => []);
-  return slugs.map((s) => ({ slug: s.slug }));
+  return slugs.map((s) => ({ slug: params.locale === "es" ? s.es : s.en }));
 }
 
 export async function generateMetadata({
@@ -42,7 +49,10 @@ export async function generateMetadata({
     seo: undefined,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: `/scuba-diving/${slug}`,
+    href: {
+      pathname: "/scuba-diving/[slug]",
+      params: { slug: canonicalSlug(exc, locale as "en" | "es") },
+    },
     fallbackTitle: exc.title?.[lk],
     fallbackDescription: exc.shortSummary?.[lk],
     fallbackImage: exc.heroImage?.asset?.url
@@ -63,6 +73,15 @@ export default async function DivingDetail({
   const lk = locale as keyof LocalizedField;
   const typedLocale = locale as "en" | "es";
   const isEs = typedLocale === "es";
+
+  const canonical = canonicalSlug(exc, typedLocale);
+  if (canonical && slug !== canonical) {
+    permanentRedirect({
+      href: { pathname: "/scuba-diving/[slug]", params: { slug: canonical } },
+      locale: typedLocale,
+    });
+  }
+
 
   const title = exc.title?.[lk] ?? "";
   const summary = exc.shortSummary?.[lk] ?? "";
@@ -90,6 +109,13 @@ export default async function DivingDetail({
 
   return (
     <>
+      <SetLocaleAlternates
+        pathname="/scuba-diving/[slug]"
+        slugs={{
+          en: canonicalSlug(exc, "en"),
+          es: canonicalSlug(exc, "es"),
+        }}
+      />
       <section className="pt-14 pb-2">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <p className="text-xs uppercase tracking-[0.18em] text-teal font-heading font-semibold mb-3">

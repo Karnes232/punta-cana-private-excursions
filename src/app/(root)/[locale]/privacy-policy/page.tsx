@@ -15,7 +15,7 @@ export async function generateMetadata({
     locale,
     documentId: ID,
     fallbackTitle: FALLBACK,
-    path: "/privacy-policy",
+    href: "/privacy-policy",
   });
 }
 
@@ -31,7 +31,6 @@ export default async function PrivacyPage({
       documentId={ID}
       fetcher={getPrivacyPolicy}
       fallbackTitle={FALLBACK}
-      path="/privacy-policy"
     />
   );
 }

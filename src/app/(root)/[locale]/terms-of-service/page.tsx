@@ -15,7 +15,7 @@ export async function generateMetadata({
     locale,
     documentId: ID,
     fallbackTitle: FALLBACK,
-    path: "/terms-of-service",
+    href: "/terms-of-service",
   });
 }
 
@@ -31,7 +31,6 @@ export default async function TermsPage({
       documentId={ID}
       fetcher={getTermsOfService}
       fallbackTitle={FALLBACK}
-      path="/terms-of-service"
     />
   );
 }

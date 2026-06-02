@@ -35,7 +35,7 @@ export async function generateMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: "/about",
+    href: "/about",
     fallbackTitle: loc(page?.heroHeadline, locale) || "About",
     fallbackDescription: loc(page?.heroSubheadline, locale),
   });

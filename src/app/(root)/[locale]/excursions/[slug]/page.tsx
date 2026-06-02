@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { permanentRedirect } from "@/i18n/navigation";
+import { canonicalSlug } from "@/sanity/lib/resolveSlug";
+import { SetLocaleAlternates } from "@/components/Layout/LocaleSwitchContext";
 import {
   getIndividualExcursion,
   getExcursionSlugs,
@@ -21,9 +24,13 @@ import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FaqPreview } from "@/components/HomePage/FaqPreview/FaqPreview";
 import { FeaturedExcursions } from "@/components/HomePage/FeaturedExcursions/FeaturedExcursions";
 
-export async function generateStaticParams() {
+export async function generateStaticParams({
+  params,
+}: {
+  params: { locale: string };
+}) {
   const slugs = await getExcursionSlugs().catch(() => []);
-  return slugs.map((s) => ({ slug: s.slug }));
+  return slugs.map((s) => ({ slug: params.locale === "es" ? s.es : s.en }));
 }
 
 export async function generateMetadata({
@@ -43,7 +50,10 @@ export async function generateMetadata({
     seo: undefined,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: `/excursions/${slug}`,
+    href: {
+      pathname: "/excursions/[slug]",
+      params: { slug: canonicalSlug(excursion, locale as "en" | "es") },
+    },
     fallbackTitle: excursion.title?.[lk],
     fallbackDescription: excursion.shortSummary?.[lk],
     fallbackImage: excursion.heroImage?.asset?.url
@@ -66,6 +76,17 @@ export default async function ExcursionDetail({
 
   const lk = locale as keyof LocalizedField;
   const typedLocale = locale as "en" | "es";
+
+  // Redirect non-canonical slugs (e.g. an old English slug under /es) to the
+  // canonical localized URL for this locale.
+  const canonical = canonicalSlug(excursion, typedLocale);
+  if (canonical && slug !== canonical) {
+    permanentRedirect({
+      href: { pathname: "/excursions/[slug]", params: { slug: canonical } },
+      locale: typedLocale,
+    });
+  }
+
   const isEs = typedLocale === "es";
   const title = excursion.title?.[lk] ?? "";
   const summary = excursion.shortSummary?.[lk] ?? "";
@@ -94,6 +115,13 @@ export default async function ExcursionDetail({
 
   return (
     <>
+      <SetLocaleAlternates
+        pathname="/excursions/[slug]"
+        slugs={{
+          en: canonicalSlug(excursion, "en"),
+          es: canonicalSlug(excursion, "es"),
+        }}
+      />
       {/* Title + summary band */}
       <section className="pt-14 pb-2">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
@@ -263,7 +291,7 @@ export default async function ExcursionDetail({
           eyebrow={isEs ? "Más experiencias" : "More experiences"}
           heading={isEs ? "También podrían interesarte." : "You may also like."}
           excursions={excursion.relatedExcursions.map((r) => ({
-            slug: r.slug.current,
+            slug: canonicalSlug(r, typedLocale),
             title: getLocalized(r.title, locale),
             summary: getLocalized(r.shortSummary, locale),
             image: {

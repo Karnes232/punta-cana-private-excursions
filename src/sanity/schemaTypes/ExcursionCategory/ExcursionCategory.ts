@@ -26,12 +26,20 @@ export const excursionCategory = defineType({
       title: "Slug",
       type: "slug",
       description:
-        "URL-friendly identifier. Used in filter query params (?category=island-tours) and category page URLs.",
+        "URL-friendly identifier. Used as the stable key in filter query params (?category=island-tours), shared across languages.",
       options: {
         source: "title.en",
         maxLength: 96,
       },
       validation: (rule) => rule.required(),
+    }),
+
+    defineField({
+      name: "localizedSlug",
+      title: "URL Slug (per language)",
+      type: "localizedSlug",
+      description:
+        "Optional localized slugs for future category landing pages. The filter query param above stays language-stable; these are only used where a localized category URL is rendered.",
     }),
 
     defineField({

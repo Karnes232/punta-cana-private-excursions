@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { Link, staticHref } from "@/i18n/navigation";
 import type {
   SocialLink,
   FooterQuickLink,
@@ -140,7 +140,7 @@ export async function Footer({
             {quickLinks.map((q) => (
               <li key={q.href}>
                 <Link
-                  href={q.href}
+                  href={staticHref(q.href)}
                   className="text-sand-dark/80 hover:text-sunset text-sm transition-colors"
                 >
                   {q.label}

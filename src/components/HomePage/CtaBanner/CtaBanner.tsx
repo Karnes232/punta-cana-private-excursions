@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/navigation";
+import { Link, staticHref } from "@/i18n/navigation";
 
 interface CtaBannerProps {
   eyebrow?: string;
@@ -55,7 +55,7 @@ export function CtaBanner({
         )}
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           {primaryCtaText && (
-            <Link href={primaryCtaHref} className="btn-accent">
+            <Link href={staticHref(primaryCtaHref)} className="btn-accent">
               {primaryCtaText}
             </Link>
           )}

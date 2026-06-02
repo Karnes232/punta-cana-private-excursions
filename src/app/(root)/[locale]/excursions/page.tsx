@@ -28,7 +28,7 @@ export async function generateMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: "/excursions",
+    href: "/excursions",
     fallbackTitle: page?.heroHeadline?.[lk] ?? "Private Excursions",
     fallbackDescription: page?.heroSubheadline?.[lk],
   });

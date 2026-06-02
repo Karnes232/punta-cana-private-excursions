@@ -6,6 +6,7 @@ import {
 } from "@/sanity/queries/LegalPages/LegalDocument";
 import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
+import type { AppHref } from "@/i18n/navigation";
 import {
   getLocalized,
   getLocalizedPortableText,
@@ -17,14 +18,13 @@ interface RenderArgs {
   documentId: string;
   fetcher: () => Promise<LegalPageData | null>;
   fallbackTitle: { en: string; es: string };
-  path: string;
 }
 
 export async function renderLegalMetadata(args: {
   locale: string;
   documentId: string;
   fallbackTitle: { en: string; es: string };
-  path: string;
+  href: AppHref;
 }): Promise<Metadata> {
   const [pageSeo, defaultSeo] = await Promise.all([
     getLegalDocumentSeo(args.documentId).catch(() => null),
@@ -36,7 +36,7 @@ export async function renderLegalMetadata(args: {
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: args.locale as "en" | "es",
-    path: args.path,
+    href: args.href,
     fallbackTitle: title,
   });
 }

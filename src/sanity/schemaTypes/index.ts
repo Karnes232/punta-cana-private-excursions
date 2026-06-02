@@ -6,6 +6,7 @@ import {
   localizedStringArray,
   localizedText,
 } from "./Localized/localizedTypes";
+import { localizedSlug } from "./Localized/localizedSlug";
 // SEO Types
 import { seo } from "./SEO/seo";
 import { seoSingleLanguage } from "./SEO/seoSingleLanguage";
@@ -44,6 +45,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     localizedText,
     localizedBlockContent,
     localizedStringArray,
+    localizedSlug,
     // SEO Types
     seo,
     seoSingleLanguage,

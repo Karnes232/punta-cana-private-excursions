@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, staticHref } from "@/i18n/navigation";
+import { useLocaleSwitch } from "@/components/Layout/LocaleSwitchContext";
 import { getLocalized } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import type {
   Logo as LogoType,
@@ -35,6 +36,7 @@ const DEFAULT_NAV_KEYS = [
 export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
   const t = useTranslations("Navigation");
   const pathname = usePathname();
+  const switchAlternates = useLocaleSwitch();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -92,6 +94,16 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
 
   const otherLocale = locale === "en" ? "es" : "en";
 
+  // On slug pages the switcher must target the OTHER locale's translated slug
+  // (registered via LocaleSwitchContext); elsewhere it reuses the pathname,
+  // which next-intl re-localizes for the target locale.
+  const switchHref = switchAlternates
+    ? {
+        pathname: switchAlternates.pathname,
+        params: { slug: switchAlternates.slugs[otherLocale] },
+      }
+    : staticHref(pathname);
+
   return (
     <header
       className={`sticky top-0 z-40 transition-all duration-300 will-change-transform ${
@@ -138,7 +150,7 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
             return (
               <Link
                 key={link.href}
-                href={link.href}
+                href={staticHref(link.href)}
                 className={`text-sm font-heading font-medium transition-colors ${
                   active
                     ? "text-ocean"
@@ -153,14 +165,14 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
 
         <div className="hidden lg:flex items-center gap-4">
           <Link
-            href={pathname}
+            href={switchHref}
             locale={otherLocale}
             className="text-xs font-heading font-semibold tracking-[0.18em] uppercase text-slate hover:text-ocean transition-colors"
             aria-label={`Switch to ${otherLocale.toUpperCase()}`}
           >
             {otherLocale}
           </Link>
-          <Link href={cta.href} className="btn-primary text-sm">
+          <Link href={staticHref(cta.href)} className="btn-primary text-sm">
             {cta.label}
           </Link>
         </div>
@@ -205,7 +217,7 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
             {links.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={staticHref(link.href)}
                 className="font-heading font-medium text-slate hover:text-ocean py-3 border-b border-sand-dark/60 last:border-b-0"
               >
                 {link.label}
@@ -213,13 +225,16 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
             ))}
             <div className="flex items-center justify-between gap-4 mt-6">
               <Link
-                href={pathname}
+                href={switchHref}
                 locale={otherLocale}
                 className="text-xs font-heading font-semibold tracking-[0.18em] uppercase text-slate"
               >
                 {otherLocale}
               </Link>
-              <Link href={cta.href} className="btn-primary text-sm flex-1 text-center">
+              <Link
+                href={staticHref(cta.href)}
+                className="btn-primary text-sm flex-1 text-center"
+              >
                 {cta.label}
               </Link>
             </div>

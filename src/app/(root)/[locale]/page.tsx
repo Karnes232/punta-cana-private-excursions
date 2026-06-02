@@ -15,6 +15,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { getHomePage, getHomePageSeo } from "@/sanity/queries/HomePage/HomePage";
 import { getExcursionCategoryHomePage } from "@/sanity/queries/ExcursionCategory/ExcursionCategory";
 import { getFeaturedExcursions } from "@/sanity/queries/IndividualExcursions/Excursionqueries";
+import { canonicalSlug } from "@/sanity/lib/resolveSlug";
 import {
   getGeneralLayout,
   getLocalized,
@@ -39,7 +40,7 @@ export async function generateMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: "/",
+    href: "/",
     fallbackTitle: homePage?.heroHeadline?.[lk],
     fallbackDescription: homePage?.heroSubheadline?.[lk],
     fallbackImage: homePage?.heroImage?.asset?.url
@@ -145,7 +146,7 @@ export default async function Home({ params }: HomeProps) {
         subheading={homePage?.featuredSubheading?.[lk]}
         viewAllText={homePage?.featuredViewAllText?.[lk]}
         excursions={featured.map((exc) => ({
-          slug: exc.slug.current,
+          slug: canonicalSlug(exc, locale as "en" | "es"),
           title: getLocalized(exc.title, locale),
           summary: getLocalized(exc.shortSummary, locale),
           image: {

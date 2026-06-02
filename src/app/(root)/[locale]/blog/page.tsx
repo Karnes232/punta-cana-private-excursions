@@ -30,7 +30,7 @@ export async function generateMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: "/blog",
+    href: "/blog",
     fallbackTitle: page?.heroHeadline?.[lk] ?? "Journal",
     fallbackDescription: page?.heroSubheadline?.[lk],
   });
@@ -90,7 +90,7 @@ export default async function BlogIndex({
                 return (
                   <RevealOnScroll key={a._id} delayMs={(i % 3) * 80}>
                     <Link
-                      href={`/blog/${a.slug}`}
+                      href={{ pathname: "/blog/[slug]", params: { slug: a.slug } }}
                       className="group block card-excursion h-full"
                     >
                       <div className="relative aspect-[16/10] overflow-hidden">

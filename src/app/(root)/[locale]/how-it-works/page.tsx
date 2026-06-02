@@ -31,7 +31,7 @@ export async function generateMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: "/how-it-works",
+    href: "/how-it-works",
     fallbackTitle: page?.heroHeadline?.[lk] ?? "How it works",
     fallbackDescription: page?.heroSubheadline?.[lk],
   });

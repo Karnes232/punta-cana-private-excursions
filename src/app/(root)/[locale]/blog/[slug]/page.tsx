@@ -3,16 +3,24 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   getBlogArticle,
-  getBlogArticleSlugs,
+  getBlogArticleSlugsByLanguage,
+  getBlogArticleTranslations,
 } from "@/sanity/queries/Blog/Blog";
+import { SetLocaleAlternates } from "@/components/Layout/LocaleSwitchContext";
 import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
 import { buildSingleLanguageMetadata } from "@/lib/seo/buildMetadata";
 import { BlockContent } from "@/components/BlockContent/BlockContent";
 import { Link } from "@/i18n/navigation";
 import { hotspotToObjectPosition } from "@/sanity/lib/hotspot";
 
-export async function generateStaticParams() {
-  const slugs = await getBlogArticleSlugs().catch(() => []);
+export async function generateStaticParams({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const slugs = await getBlogArticleSlugsByLanguage(params.locale).catch(
+    () => [],
+  );
   return slugs.map((s) => ({ slug: s.slug }));
 }
 
@@ -43,7 +51,7 @@ export async function generateMetadata({
     },
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: `/blog/${slug}`,
+    href: { pathname: "/blog/[slug]", params: { slug } },
     fallbackTitle: article.title,
     fallbackDescription: article.excerpt,
   });
@@ -57,6 +65,21 @@ export default async function BlogArticlePage({
   const { locale, slug } = await params;
   const article = await getBlogArticle(slug).catch(() => null);
   if (!article) notFound();
+
+  // Build per-locale slugs for the language switcher from the translation group.
+  // Falls back to the current slug when a translation is missing (renders the
+  // original-language article rather than 404ing).
+  const translations = article.translationGroup
+    ? await getBlogArticleTranslations(article.translationGroup, slug).catch(
+        () => [],
+      )
+    : [];
+  const slugByLang: Record<string, string> = { [article.language]: article.slug };
+  for (const tr of translations) slugByLang[tr.language] = tr.slug;
+  const blogSlugs = {
+    en: slugByLang.en ?? article.slug,
+    es: slugByLang.es ?? article.slug,
+  };
 
   const isEs = locale === "es";
   const date = article.publishedAt
@@ -72,6 +95,7 @@ export default async function BlogArticlePage({
 
   return (
     <article>
+      <SetLocaleAlternates pathname="/blog/[slug]" slugs={blogSlugs} />
       <header className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-12 pt-16 pb-10 text-center">
         {categoryLabel && (
           <p className="text-xs uppercase tracking-[0.18em] text-teal font-heading font-semibold mb-4">

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
+import { Link, staticHref } from "@/i18n/navigation";
 import {
   hotspotToObjectPosition,
   type SanityHotspot,
@@ -98,13 +98,13 @@ export function Hero({
         {(primaryCTA || secondaryCTA) && (
           <div className="mt-10 flex flex-wrap gap-3">
             {primaryCTA?.text && (
-              <Link href={primaryCTA.href || "#"} className="btn-primary">
+              <Link href={staticHref(primaryCTA.href || "#")} className="btn-primary">
                 {primaryCTA.text}
               </Link>
             )}
             {secondaryCTA?.text && (
               <Link
-                href={secondaryCTA.href || "#"}
+                href={staticHref(secondaryCTA.href || "#")}
                 className="btn-secondary !bg-transparent !text-white !border-white/50 hover:!bg-white hover:!text-ocean"
               >
                 {secondaryCTA.text}

@@ -15,6 +15,7 @@ import {
   getLocalized,
   type LocalizedField,
 } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
+import { canonicalSlug } from "@/sanity/lib/resolveSlug";
 import { hotspotToObjectPosition } from "@/sanity/lib/hotspot";
 
 export async function generateMetadata({
@@ -34,7 +35,7 @@ export async function generateMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
     locale: locale as "en" | "es",
-    path: "/scuba-diving",
+    href: "/scuba-diving",
     fallbackTitle: page?.heroHeadline?.[lk] ?? "Private Diving Charters",
     fallbackDescription: page?.heroSubheadline?.[lk],
   });
@@ -89,7 +90,12 @@ export default async function ScubaDivingHub({
               {excursions.map((exc, i) => (
                 <RevealOnScroll key={exc._id} delayMs={(i % 3) * 80}>
                   <Link
-                    href={`/scuba-diving/${exc.slug.current}`}
+                    href={{
+                      pathname: "/scuba-diving/[slug]",
+                      params: {
+                        slug: canonicalSlug(exc, locale as "en" | "es"),
+                      },
+                    }}
                     className="group block card-excursion h-full"
                   >
                     <div className="relative aspect-[4/3] overflow-hidden">

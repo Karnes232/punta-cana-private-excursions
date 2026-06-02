@@ -15,7 +15,7 @@ export async function generateMetadata({
     locale,
     documentId: ID,
     fallbackTitle: FALLBACK,
-    path: "/cancellation-policy",
+    href: "/cancellation-policy",
   });
 }
 
@@ -31,7 +31,6 @@ export default async function CancellationPage({
       documentId={ID}
       fetcher={getCancellationPolicy}
       fallbackTitle={FALLBACK}
-      path="/cancellation-policy"
     />
   );
 }

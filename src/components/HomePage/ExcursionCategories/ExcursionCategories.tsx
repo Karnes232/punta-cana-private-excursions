@@ -55,7 +55,7 @@ export function ExcursionCategories({
             {categories.map((cat, i) => (
               <RevealOnScroll key={cat.slug} delayMs={i * 60}>
                 <Link
-                  href={`/excursions?category=${cat.slug}`}
+                  href={{ pathname: "/excursions", query: { category: cat.slug } }}
                   className="group block relative aspect-[4/5] rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow"
                 >
                   {cat.image.url ? (

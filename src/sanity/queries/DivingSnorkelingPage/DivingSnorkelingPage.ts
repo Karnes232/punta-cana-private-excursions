@@ -1,5 +1,6 @@
 import type { LocalizedBlockContent } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import { client } from "@/sanity/lib/client";
+import type { LocalizedSlug } from "@/sanity/lib/resolveSlug";
 
 // =============================================================================
 // Shared types
@@ -30,6 +31,7 @@ export interface DivingExcursionCard {
   _id: string;
   title: LocalizedString;
   slug: { current: string };
+  localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedText;
   heroImage: {
     url: string;
@@ -83,6 +85,7 @@ const excursionCardProjection = /* groq */ `{
   _id,
   title,
   slug,
+  localizedSlug,
   shortSummary,
   heroImage {
     "url": asset->url,

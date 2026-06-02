@@ -1,5 +1,10 @@
 import { client } from "@/sanity/lib/client";
 import {
+  SLUG_MATCH,
+  SLUG_PROJECTION,
+  type LocalizedSlug,
+} from "@/sanity/lib/resolveSlug";
+import {
   LocalizedBlockContent,
   LocalizedField,
   LocalizedStringArray,
@@ -42,6 +47,7 @@ export interface ExcursionCategory {
   slug: {
     current: string;
   };
+  localizedSlug?: LocalizedSlug | null;
 }
 
 export interface ExcursionFaqItem {
@@ -56,6 +62,7 @@ export interface RelatedExcursion {
   slug: {
     current: string;
   };
+  localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   price: number;
   duration: LocalizedField;
@@ -95,6 +102,7 @@ export interface IndividualExcursion {
   slug: {
     current: string;
   };
+  localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   badge: LocalizedField | null;
 
@@ -188,6 +196,7 @@ export interface ExcursionListItem {
   slug: {
     current: string;
   };
+  localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   price: number;
   duration: LocalizedField;
@@ -220,18 +229,19 @@ export interface ExcursionListItem {
 }
 
 export interface ExcursionSlug {
-  slug: string;
+  en: string;
+  es: string;
 }
 
 // =============================================================================
 // Queries
 // =============================================================================
 
-export const individualExcursionQuery = `*[_type == "excursion" && slug.current == $slug][0] {
+export const individualExcursionQuery = `*[_type == "excursion" && ${SLUG_MATCH}][0] {
     _id,
     _type,
     title,
-    slug,
+    ${SLUG_PROJECTION},
     shortSummary,
     badge,
     heroImage {
@@ -302,6 +312,7 @@ export const individualExcursionQuery = `*[_type == "excursion" && slug.current 
         _id,
         title,
         slug,
+        localizedSlug,
         shortSummary,
         price,
         duration,
@@ -332,6 +343,7 @@ export const excursionListQuery = `*[_type == "excursion"] | order(sortOrder asc
     _id,
     title,
     slug,
+    localizedSlug,
     shortSummary,
     price,
     duration,
@@ -357,14 +369,16 @@ export const excursionListQuery = `*[_type == "excursion"] | order(sortOrder asc
     }
 }`;
 
-export const excursionSlugsQuery = `*[_type == "excursion" && defined(slug.current)] {
-    "slug": slug.current
+export const excursionSlugsQuery = `*[_type == "excursion" && (defined(slug.current) || defined(localizedSlug.en.current))] {
+    "en": coalesce(localizedSlug.en.current, slug.current),
+    "es": coalesce(localizedSlug.es.current, localizedSlug.en.current, slug.current)
 }`;
 
 export const featuredExcursionsQuery = `*[_type == "excursion" && isFeatured == true] | order(sortOrder asc) [0...3] {
     _id,
     title,
     slug,
+    localizedSlug,
     shortSummary,
     price,
     duration,
@@ -418,7 +432,7 @@ export async function getExcursionSlugs(): Promise<ExcursionSlug[]> {
 
 import { seoProjection, type SeoData } from "../SEO/seoProjection";
 
-export const individualExcursionSeoQuery = `*[_type == "excursion" && slug.current == $slug][0]{
+export const individualExcursionSeoQuery = `*[_type == "excursion" && ${SLUG_MATCH}][0]{
   "seo": seo { ${seoProjection} }
 }`;
 

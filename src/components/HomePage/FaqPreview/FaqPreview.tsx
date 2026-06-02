@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, staticHref } from "@/i18n/navigation";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 
 interface FaqItem {
@@ -92,7 +92,7 @@ export function FaqPreview({
 
         {ctaText && (
           <div className="mt-10 text-center">
-            <Link href={ctaHref} className="btn-secondary">
+            <Link href={staticHref(ctaHref)} className="btn-secondary">
               {ctaText}
             </Link>
           </div>

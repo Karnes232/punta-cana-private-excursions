@@ -33,6 +33,89 @@ const DEFAULT_NAV_KEYS = [
   { key: "contact", href: "/contact" },
 ] as const;
 
+const LOCALES = ["en", "es"] as const;
+// Compact code shown in the toggle; full autonym used for the accessible label
+// so a Spanish speaker recognizes "Español" even while on an English page.
+const LOCALE_LABEL = { en: "EN", es: "ES" } as const;
+const LOCALE_NAME = { en: "English", es: "Español" } as const;
+
+function GlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" />
+    </svg>
+  );
+}
+
+/**
+ * Segmented EN | ES language toggle. Showing both locales with the active one
+ * filled resolves the "is this my current language or the target?" ambiguity of
+ * a single code. The current locale is a non-interactive marker; the other is
+ * the switch link (carrying the per-locale slug computed in Navbar).
+ */
+function LanguageSwitcher({
+  locale,
+  switchHref,
+  className = "",
+}: {
+  locale: "en" | "es";
+  switchHref: React.ComponentProps<typeof Link>["href"];
+  className?: string;
+}) {
+  return (
+    <div
+      role="group"
+      aria-label="Select language"
+      className={`inline-flex items-center gap-2 ${className}`}
+    >
+      <GlobeIcon className="h-4 w-4 shrink-0 text-gray" />
+      <div className="inline-flex items-center rounded-full border border-sand-dark bg-sand p-0.5">
+        {LOCALES.map((loc) => {
+          const isActive = loc === locale;
+          const base =
+            "rounded-full px-3 py-1.5 text-xs font-heading font-semibold tracking-[0.1em] transition-colors";
+          if (isActive) {
+            return (
+              <span
+                key={loc}
+                lang={loc}
+                aria-current="true"
+                className={`${base} bg-white text-ocean shadow-xs`}
+              >
+                {LOCALE_LABEL[loc]}
+              </span>
+            );
+          }
+          return (
+            <Link
+              key={loc}
+              href={switchHref}
+              locale={loc}
+              hrefLang={loc}
+              lang={loc}
+              aria-label={`Switch to ${LOCALE_NAME[loc]}`}
+              className={`${base} text-gray-dark hover:text-ocean`}
+            >
+              {LOCALE_LABEL[loc]}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
   const t = useTranslations("Navigation");
   const pathname = usePathname();
@@ -164,14 +247,7 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
         </nav>
 
         <div className="hidden lg:flex items-center gap-4">
-          <Link
-            href={switchHref}
-            locale={otherLocale}
-            className="text-xs font-heading font-semibold tracking-[0.18em] uppercase text-slate hover:text-ocean transition-colors"
-            aria-label={`Switch to ${otherLocale.toUpperCase()}`}
-          >
-            {otherLocale}
-          </Link>
+          <LanguageSwitcher locale={locale} switchHref={switchHref} />
           <Link href={staticHref(cta.href)} className="btn-primary text-sm">
             {cta.label}
           </Link>
@@ -224,13 +300,7 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
               </Link>
             ))}
             <div className="flex items-center justify-between gap-4 mt-6">
-              <Link
-                href={switchHref}
-                locale={otherLocale}
-                className="text-xs font-heading font-semibold tracking-[0.18em] uppercase text-slate"
-              >
-                {otherLocale}
-              </Link>
+              <LanguageSwitcher locale={locale} switchHref={switchHref} />
               <Link
                 href={staticHref(cta.href)}
                 className="btn-primary text-sm flex-1 text-center"

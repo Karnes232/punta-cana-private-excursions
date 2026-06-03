@@ -73,7 +73,7 @@ export function Hero({
           autoPlay
           muted
           playsInline
-          preload="none"
+          preload="metadata"
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover motion-safe:block motion-reduce:hidden"
           style={{ zIndex: -15 }}

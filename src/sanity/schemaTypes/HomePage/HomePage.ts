@@ -48,7 +48,7 @@ export const homePage = defineType({
       title: "Hero Video (Cloudinary Public ID)",
       type: "string",
       description:
-        'Optional. Cloudinary public ID for an autoplay/muted/looping hero video (e.g. "excursions/hero-loop"). Leave empty to use the hero image only. Keep clips short (6–12s), silent, 1920×1080 landscape, ≤ 3MB after Cloudinary optimization.',
+        'Optional. Cloudinary public ID relative to the project folder — enter just the filename or subpath (e.g. "Sailing_catamaran_..." or "hero/sailing-loop"); the project folder is added automatically. Leave empty to use the hero image only. Keep clips short (6–12s), silent, 1920×1080 landscape, ≤ 3MB after Cloudinary optimization.',
       group: "hero",
     }),
 

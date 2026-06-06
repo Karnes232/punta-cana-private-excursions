@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
-import { FaqCategorySection } from "@/components/FaqPage/FaqCategorySection";
+import { FaqPageContent } from "@/components/FaqPage/FaqPageContent";
 import { CtaBanner } from "@/components/HomePage/CtaBanner/CtaBanner";
 import { getFaqPage, getFaqPageSeo } from "@/sanity/queries/FaqPage/FaqPage";
 import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
@@ -43,7 +43,10 @@ export default async function FaqPage({
   return (
     <>
       <PageHero
-        eyebrow={isEs ? "Preguntas frecuentes" : "Frequently asked"}
+        eyebrow={
+          page?.heroEyebrow?.[lk] ||
+          (isEs ? "Preguntas frecuentes" : "Frequently asked")
+        }
         headline={
           page?.heroHeadline?.[lk] ??
           (isEs
@@ -64,19 +67,21 @@ export default async function FaqPage({
       />
 
       <section className="section-white py-20 sm:py-28">
-        <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
           {page?.categories && page.categories.length > 0 ? (
-            page.categories.map((cat) => (
-              <FaqCategorySection
-                key={cat._key}
-                title={cat.categoryName?.[lk] ?? ""}
-                icon={cat.icon}
-                items={cat.items.map((it) => ({
+            <FaqPageContent
+              allLabel={isEs ? "Todas" : "All"}
+              categories={page.categories.map((cat) => ({
+                key: cat._key,
+                title: cat.categoryName?.[lk] ?? "",
+                subtitle: cat.subtitle?.[lk],
+                icon: cat.icon,
+                items: cat.items.map((it) => ({
                   question: it.question?.[lk] ?? "",
                   answer: it.answer?.[lk] ?? "",
-                }))}
-              />
-            ))
+                })),
+              }))}
+            />
           ) : (
             <p className="text-center text-gray italic">
               {isEs
@@ -88,14 +93,24 @@ export default async function FaqPage({
       </section>
 
       <CtaBanner
-        headline={isEs ? "¿No encontraste tu respuesta?" : "Didn't find your answer?"}
-        subheadline={
-          isEs
-            ? "Nuestra conserjería responde dentro de 24 horas."
-            : "Our concierge replies within 24 hours."
+        eyebrow={page?.ctaEyebrow?.[lk] || undefined}
+        headline={
+          page?.ctaHeadline?.[lk] ??
+          (isEs ? "¿No encontraste tu respuesta?" : "Didn't find your answer?")
         }
-        primaryCtaText={isEs ? "Hablar con conserjería" : "Talk to concierge"}
-        primaryCtaHref="/contact"
+        subheadline={
+          page?.ctaSubheadline?.[lk] ??
+          (isEs
+            ? "Nuestra conserjería responde dentro de 24 horas."
+            : "Our concierge replies within 24 hours.")
+        }
+        primaryCtaText={
+          page?.ctaButtonText?.[lk] ??
+          (isEs ? "Hablar con conserjería" : "Talk to concierge")
+        }
+        primaryCtaHref={page?.ctaButtonHref ?? "/contact"}
+        secondaryCtaText={page?.ctaSecondaryButtonText?.[lk]}
+        secondaryCtaHref={page?.ctaSecondaryButtonHref}
       />
     </>
   );

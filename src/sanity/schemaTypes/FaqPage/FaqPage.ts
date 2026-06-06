@@ -9,6 +9,13 @@ export const faqPage = defineType({
 
   fields: [
     defineField({
+      name: "heroEyebrow",
+      title: "Hero Eyebrow / Kicker",
+      type: "localizedString",
+      description:
+        'Small uppercase label above the headline. e.g. "Frequently asked"',
+    }),
+    defineField({
       name: "heroHeadline",
       title: "Hero Headline",
       type: "localizedString",
@@ -43,18 +50,30 @@ export const faqPage = defineType({
               validation: (r) => r.required(),
             }),
             defineField({
+              name: "subtitle",
+              title: "Subtitle",
+              type: "localizedString",
+              description:
+                'Short scope line under the category name, e.g. "Booking, deposits, and how payment works"',
+            }),
+            defineField({
               name: "icon",
-              title: "Icon Key",
+              title: "Icon",
               type: "string",
-              description: "Icon key: booking, excursion, cancellation, safety, general",
               options: {
                 list: [
-                  { title: "Booking", value: "booking" },
-                  { title: "Excursion", value: "excursion" },
-                  { title: "Cancellation", value: "cancellation" },
-                  { title: "Safety", value: "safety" },
-                  { title: "General", value: "general" },
+                  { title: "Booking (calendar check)", value: "booking" },
+                  { title: "Cancellation (rotate)", value: "cancellation" },
+                  { title: "Transport / Pickup (bus)", value: "transport" },
+                  { title: "Safety (shield check)", value: "safety" },
+                  { title: "On the day (sun)", value: "day" },
+                  { title: "Diving / Snorkeling (waves)", value: "diving" },
+                  { title: "Planning (map)", value: "planning" },
+                  { title: "Company / About (users)", value: "company" },
+                  { title: "Excursion (compass)", value: "excursion" },
+                  { title: "General (help circle)", value: "general" },
                 ],
+                layout: "dropdown",
               },
             }),
             defineField({
@@ -95,6 +114,49 @@ export const faqPage = defineType({
           },
         }),
       ],
+    }),
+
+    defineField({
+      name: "ctaEyebrow",
+      title: "CTA Eyebrow / Kicker",
+      type: "localizedString",
+      description:
+        'Small uppercase label above the headline. e.g. "Ready when you are"',
+    }),
+    defineField({
+      name: "ctaHeadline",
+      title: "CTA Headline",
+      type: "localizedString",
+      description: 'e.g. "Didn\'t find your answer?"',
+    }),
+    defineField({
+      name: "ctaSubheadline",
+      title: "CTA Subheadline",
+      type: "localizedText",
+    }),
+    defineField({
+      name: "ctaButtonText",
+      title: "Primary Button Text",
+      type: "localizedString",
+    }),
+    defineField({
+      name: "ctaButtonHref",
+      title: "Primary Button Link",
+      type: "string",
+      initialValue: "/contact",
+    }),
+    defineField({
+      name: "ctaSecondaryButtonText",
+      title: "Secondary Button Text",
+      type: "localizedString",
+      description: 'e.g. "Browse excursions"',
+    }),
+    defineField({
+      name: "ctaSecondaryButtonHref",
+      title: "Secondary Button Link",
+      type: "string",
+      description:
+        'Internal path (e.g. "/excursions") or full URL (e.g. "https://wa.me/18091234567")',
     }),
 
     defineField({

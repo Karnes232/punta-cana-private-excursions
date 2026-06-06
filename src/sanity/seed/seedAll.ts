@@ -642,6 +642,7 @@ const howItWorksPage = {
 const faqPage = {
   _id: "faqPage",
   _type: "faqPage",
+  heroEyebrow: { en: "Frequently asked", es: "Preguntas frecuentes" },
   heroHeadline: {
     en: "What our guests ask.",
     es: "Lo que preguntan nuestros huéspedes.",
@@ -654,7 +655,11 @@ const faqPage = {
     {
       _key: "cat1",
       categoryName: { en: "Booking", es: "Reservas" },
-      icon: "📅",
+      subtitle: {
+        en: "Booking, deposits, and how payment works",
+        es: "Reservas, depósitos y cómo funciona el pago",
+      },
+      icon: "booking",
       items: [
         {
           _key: "f1",
@@ -683,7 +688,11 @@ const faqPage = {
     {
       _key: "cat2",
       categoryName: { en: "On the day", es: "El día de la experiencia" },
-      icon: "🌴",
+      subtitle: {
+        en: "Pickup, weather, and what to expect",
+        es: "Recogida, clima y qué esperar",
+      },
+      icon: "day",
       items: [
         {
           _key: "f3",
@@ -739,6 +748,19 @@ const faqPage = {
       ],
     },
   ],
+  ctaEyebrow: { en: "Still have questions?", es: "¿Aún tienes preguntas?" },
+  ctaHeadline: {
+    en: "Didn't find your answer?",
+    es: "¿No encontraste tu respuesta?",
+  },
+  ctaSubheadline: {
+    en: "Our concierge replies within 24 hours.",
+    es: "Nuestra conserjería responde dentro de 24 horas.",
+  },
+  ctaButtonText: { en: "Talk to concierge", es: "Hablar con conserjería" },
+  ctaButtonHref: "/contact",
+  ctaSecondaryButtonText: { en: "Browse excursions", es: "Ver excursiones" },
+  ctaSecondaryButtonHref: "/excursions",
 };
 
 // =============================================================================

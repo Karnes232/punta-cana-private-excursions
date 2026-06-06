@@ -14,11 +14,13 @@ export interface FaqItem {
 export interface FaqCategory {
   _key: string;
   categoryName: LocalizedField;
+  subtitle: LocalizedField | null;
   icon: string | null;
   items: FaqItem[];
 }
 
 export interface FaqPageData {
+  heroEyebrow: LocalizedField;
   heroHeadline: LocalizedField;
   heroSubheadline: LocalizedField;
   heroImage: {
@@ -27,6 +29,13 @@ export interface FaqPageData {
     crop?: { top: number; bottom: number; left: number; right: number };
   } | null;
   categories: FaqCategory[];
+  ctaEyebrow: LocalizedField;
+  ctaHeadline: LocalizedField;
+  ctaSubheadline: LocalizedField;
+  ctaButtonText: LocalizedField;
+  ctaButtonHref: string;
+  ctaSecondaryButtonText: LocalizedField;
+  ctaSecondaryButtonHref: string;
 }
 
 // =============================================================================
@@ -34,6 +43,7 @@ export interface FaqPageData {
 // =============================================================================
 
 const faqPageQuery = /* groq */ `*[_type == "faqPage"][0] {
+  heroEyebrow,
   heroHeadline,
   heroSubheadline,
   heroImage {
@@ -44,13 +54,21 @@ const faqPageQuery = /* groq */ `*[_type == "faqPage"][0] {
   categories[] {
     _key,
     categoryName,
+    subtitle,
     icon,
     items[] {
       _key,
       question,
       answer
     }
-  }
+  },
+  ctaEyebrow,
+  ctaHeadline,
+  ctaSubheadline,
+  ctaButtonText,
+  ctaButtonHref,
+  ctaSecondaryButtonText,
+  ctaSecondaryButtonHref
 }`;
 
 // =============================================================================

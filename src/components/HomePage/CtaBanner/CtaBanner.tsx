@@ -6,9 +6,35 @@ interface CtaBannerProps {
   subheadline?: string;
   primaryCtaText?: string;
   primaryCtaHref?: string;
+  secondaryCtaText?: string;
+  secondaryCtaHref?: string;
   whatsappNumber?: string;
   whatsappLabel?: string;
   whatsappText?: string;
+}
+
+/** Renders an internal locale-aware link or an external anchor based on the href. */
+function CtaLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  if (href.startsWith("http")) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={staticHref(href)} className={className}>
+      {children}
+    </Link>
+  );
 }
 
 export function CtaBanner({
@@ -17,6 +43,8 @@ export function CtaBanner({
   subheadline,
   primaryCtaText,
   primaryCtaHref = "/contact",
+  secondaryCtaText,
+  secondaryCtaHref,
   whatsappNumber,
   whatsappLabel,
   whatsappText,
@@ -55,9 +83,14 @@ export function CtaBanner({
         )}
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           {primaryCtaText && (
-            <Link href={staticHref(primaryCtaHref)} className="btn-accent">
+            <CtaLink href={primaryCtaHref} className="btn-accent">
               {primaryCtaText}
-            </Link>
+            </CtaLink>
+          )}
+          {secondaryCtaText && secondaryCtaHref && (
+            <CtaLink href={secondaryCtaHref} className="btn-secondary">
+              {secondaryCtaText}
+            </CtaLink>
           )}
           {waUrl && whatsappLabel && (
             <a

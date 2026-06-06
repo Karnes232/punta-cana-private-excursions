@@ -1,4 +1,5 @@
 import { client } from "@/sanity/lib/client";
+import type { LocalizedBlockContent } from "../GeneralLayout/generalLayoutQuery";
 
 // =============================================================================
 // Types
@@ -40,13 +41,14 @@ export interface AboutPageData {
 
   storyTagline: LocalizedString;
   storyHeadline: LocalizedString;
-  storyBody: LocalizedText;
+  storyBody: LocalizedBlockContent;
   storyImage: { url: string; lqip?: string; hotspot?: { x: number; y: number } | null } | null;
-  foundedYear: number;
+  foundedLabel: LocalizedString;
 
   statsHeadline: LocalizedString;
   stats: AboutStatItem[];
 
+  valuesEyebrow: LocalizedString;
   valuesHeadline: LocalizedString;
   valuesSubheading: LocalizedText;
   values: AboutValueItem[];
@@ -55,11 +57,11 @@ export interface AboutPageData {
   teamSubheading: LocalizedText;
   teamMembers: AboutTeamMember[];
 
+  ctaEyebrow: LocalizedString;
   ctaHeadline: LocalizedString;
   ctaSubheadline: LocalizedText;
-  ctaButtonText: LocalizedString;
-  ctaWhatsappNumber: string;
-  ctaContactText: LocalizedString;
+  ctaPrimaryButton: { label: LocalizedString; href: string } | null;
+  ctaSecondaryButton: { label: LocalizedString; href: string } | null;
 
   seo: {
     metaTitle: LocalizedString;
@@ -81,9 +83,10 @@ export const aboutPageQuery = /* groq */ `*[_type == "aboutPage"][0] {
   storyHeadline,
   storyBody,
   storyImage { "url": asset->url, "lqip": asset->metadata.lqip, hotspot },
-  foundedYear,
+  foundedLabel,
   statsHeadline,
   stats[] { value, label },
+  valuesEyebrow,
   valuesHeadline,
   valuesSubheading,
   values[] { icon, title, description },
@@ -95,11 +98,11 @@ export const aboutPageQuery = /* groq */ `*[_type == "aboutPage"][0] {
     bio,
     photo { "url": asset->url, "lqip": asset->metadata.lqip, hotspot }
   },
+  ctaEyebrow,
   ctaHeadline,
   ctaSubheadline,
-  ctaButtonText,
-  ctaWhatsappNumber,
-  ctaContactText,
+  ctaPrimaryButton { label, href },
+  ctaSecondaryButton { label, href },
   seo { metaTitle, metaDescription, ogImage { "url": asset->url } }
 }`;
 

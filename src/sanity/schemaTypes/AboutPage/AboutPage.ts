@@ -66,9 +66,8 @@ export const aboutPage = defineType({
     defineField({
       name: "storyBody",
       title: "Story Body",
-      type: "localizedText",
+      type: "localizedBlockContent",
       group: "story",
-      description: "Use double line breaks to separate paragraphs.",
     }),
     defineField({
       name: "storyImage",
@@ -78,10 +77,11 @@ export const aboutPage = defineType({
       options: { hotspot: true, metadata: ["lqip"] },
     }),
     defineField({
-      name: "foundedYear",
-      title: "Founded Year",
-      type: "number",
+      name: "foundedLabel",
+      title: "Label",
+      type: "localizedString",
       group: "story",
+      description: 'e.g. "Founded in 2015"',
     }),
 
     // =========================================================================
@@ -128,6 +128,13 @@ export const aboutPage = defineType({
     // OUR VALUES
     // =========================================================================
     defineField({
+      name: "valuesEyebrow",
+      title: "Values Eyebrow / Kicker",
+      type: "localizedString",
+      group: "values",
+      description: 'Small label above the headline, e.g. "What we value"',
+    }),
+    defineField({
       name: "valuesHeadline",
       title: "Values Headline",
       type: "localizedString",
@@ -152,10 +159,21 @@ export const aboutPage = defineType({
           fields: [
             defineField({
               name: "icon",
-              title: "Icon Key",
+              title: "Icon",
               type: "string",
-              description:
-                "Icon key: safety, local, trust, bilingual, support, reviews, variety, booking",
+              options: {
+                list: [
+                  { title: "Safety (shield check)", value: "safety" },
+                  { title: "Local (map pin)", value: "local" },
+                  { title: "Trust (badge check)", value: "trust" },
+                  { title: "Bilingual (languages)", value: "bilingual" },
+                  { title: "Support (headset)", value: "support" },
+                  { title: "Reviews (star)", value: "reviews" },
+                  { title: "Variety (layout grid)", value: "variety" },
+                  { title: "Booking (calendar check)", value: "booking" },
+                ],
+                layout: "dropdown",
+              },
             }),
             defineField({ name: "title", title: "Title", type: "localizedString" }),
             defineField({ name: "description", title: "Description", type: "localizedText" }),
@@ -219,6 +237,13 @@ export const aboutPage = defineType({
     // CTA
     // =========================================================================
     defineField({
+      name: "ctaEyebrow",
+      title: "CTA Eyebrow / Kicker",
+      type: "localizedString",
+      group: "cta",
+      description: 'Small label above the headline, e.g. "Ready when you are"',
+    }),
+    defineField({
       name: "ctaHeadline",
       title: "CTA Headline",
       type: "localizedString",
@@ -231,22 +256,36 @@ export const aboutPage = defineType({
       group: "cta",
     }),
     defineField({
-      name: "ctaButtonText",
-      title: "WhatsApp Button Text",
-      type: "localizedString",
+      name: "ctaPrimaryButton",
+      title: "Primary Button",
+      type: "object",
       group: "cta",
+      fields: [
+        defineField({ name: "label", title: "Label", type: "localizedString" }),
+        defineField({
+          name: "href",
+          title: "Link",
+          type: "string",
+          description:
+            'Internal path (e.g. "/contact") or full URL (e.g. "https://wa.me/18091234567")',
+        }),
+      ],
     }),
     defineField({
-      name: "ctaWhatsappNumber",
-      title: "WhatsApp Number",
-      type: "string",
+      name: "ctaSecondaryButton",
+      title: "Secondary Button",
+      type: "object",
       group: "cta",
-    }),
-    defineField({
-      name: "ctaContactText",
-      title: "Contact Button Text",
-      type: "localizedString",
-      group: "cta",
+      fields: [
+        defineField({ name: "label", title: "Label", type: "localizedString" }),
+        defineField({
+          name: "href",
+          title: "Link",
+          type: "string",
+          description:
+            'Internal path (e.g. "/excursions") or full URL (e.g. "https://wa.me/18091234567")',
+        }),
+      ],
     }),
 
     // =========================================================================

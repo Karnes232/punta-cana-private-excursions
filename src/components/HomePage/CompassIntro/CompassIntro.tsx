@@ -197,9 +197,9 @@ export function CompassIntro({ locale, logoUrl }: CompassIntroProps) {
           {coords.lat.toFixed(4)}° N · {coords.lng.toFixed(4)}° W
         </p>
 
-        <h1 className="compass-intro__place">
+        <p className="compass-intro__place">
           <em className="compass-intro__place-name">Punta Cana</em>, {countryName}
-        </h1>
+        </p>
 
         <p className="compass-intro__subtitle">{subtitle}</p>
 

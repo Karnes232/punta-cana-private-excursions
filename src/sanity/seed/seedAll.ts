@@ -482,11 +482,11 @@ const aboutPage = {
     en: "A small concierge house with very large standards.",
     es: "Una pequeña casa de conserjería con grandes estándares.",
   },
-  storyBody: {
-    en: "We started because the best travelers we knew kept asking the same question: \"Where's the version of this that's actually private?\" There wasn't a great answer — so we built it. We hand-pick guides we'd trust with our own family. We charter the boats we'd want to spend the day on. We answer WhatsApp within minutes, not hours. And we say no to bookings we can't deliver on, because reputation is the whole business.",
-    es: "Empezamos porque los mejores viajeros que conocíamos hacían siempre la misma pregunta: «¿Dónde está la versión privada de esto?» No había una buena respuesta — así que la construimos. Seleccionamos a mano guías en los que confiaríamos a nuestra propia familia. Charteamos los barcos en los que querríamos pasar el día. Respondemos WhatsApp en minutos, no horas. Y decimos no a las reservas que no podemos cumplir, porque la reputación es todo el negocio.",
-  },
-  foundedYear: 2019,
+  storyBody: block(
+    "We started because the best travelers we knew kept asking the same question: \"Where's the version of this that's actually private?\" There wasn't a great answer — so we built it. We hand-pick guides we'd trust with our own family. We charter the boats we'd want to spend the day on. We answer WhatsApp within minutes, not hours. And we say no to bookings we can't deliver on, because reputation is the whole business.",
+    "Empezamos porque los mejores viajeros que conocíamos hacían siempre la misma pregunta: «¿Dónde está la versión privada de esto?» No había una buena respuesta — así que la construimos. Seleccionamos a mano guías en los que confiaríamos a nuestra propia familia. Charteamos los barcos en los que querríamos pasar el día. Respondemos WhatsApp en minutos, no horas. Y decimos no a las reservas que no podemos cumplir, porque la reputación es todo el negocio.",
+  ),
+  foundedLabel: { en: "Founded in 2019", es: "Fundado en 2019" },
   statsHeadline: {
     en: "Numbers we're proud of.",
     es: "Números de los que estamos orgullosos.",
@@ -513,6 +513,7 @@ const aboutPage = {
       label: { en: "Avg WhatsApp reply", es: "Respuesta WhatsApp promedio" },
     },
   ],
+  valuesEyebrow: { en: "What we value", es: "Lo que valoramos" },
   valuesHeadline: { en: "What guides us.", es: "Lo que nos guía." },
   valuesSubheading: {
     en: "Four principles. No exceptions.",
@@ -521,7 +522,7 @@ const aboutPage = {
   values: [
     {
       _key: "v1",
-      icon: "★",
+      icon: "safety",
       title: { en: "Truly private", es: "Verdaderamente privado" },
       description: {
         en: "Your group only. Always. We turn away bookings that would compromise this.",
@@ -530,7 +531,7 @@ const aboutPage = {
     },
     {
       _key: "v2",
-      icon: "✦",
+      icon: "local",
       title: { en: "Real local knowledge", es: "Conocimiento local real" },
       description: {
         en: "Our guides aren't reading a script. They grew up here.",
@@ -539,7 +540,7 @@ const aboutPage = {
     },
     {
       _key: "v3",
-      icon: "✓",
+      icon: "trust",
       title: { en: "Show up early, leave it better", es: "Llegar antes, dejarlo mejor" },
       description: {
         en: "Pickups are never late. Sites we visit are always left cleaner than we found them.",
@@ -548,7 +549,7 @@ const aboutPage = {
     },
     {
       _key: "v4",
-      icon: "♥",
+      icon: "reviews",
       title: { en: "Reputation over volume", es: "Reputación sobre volumen" },
       description: {
         en: "We'd rather host fewer perfect days than more mediocre ones.",
@@ -564,6 +565,7 @@ const aboutPage = {
     en: "Three founders, twelve guides, one shared standard.",
     es: "Tres fundadores, doce guías, un estándar compartido.",
   },
+  ctaEyebrow: { en: "Ready when you are", es: "Cuando tú digas" },
   ctaHeadline: {
     en: "Let's design your day.",
     es: "Diseñemos tu día.",
@@ -572,9 +574,14 @@ const aboutPage = {
     en: "Concierge available daily, 8am – 9pm AST.",
     es: "Conserjería disponible diariamente, 8am – 9pm AST.",
   },
-  ctaButtonText: { en: "Talk to concierge", es: "Hablar con conserjería" },
-  ctaWhatsappNumber: "+18295550100",
-  ctaContactText: { en: "WhatsApp", es: "WhatsApp" },
+  ctaPrimaryButton: {
+    label: { en: "Talk to concierge", es: "Hablar con conserjería" },
+    href: "/contact",
+  },
+  ctaSecondaryButton: {
+    label: { en: "WhatsApp", es: "WhatsApp" },
+    href: "https://wa.me/18295550100",
+  },
 };
 
 // =============================================================================

@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import {
+  ShieldCheck,
+  MapPin,
+  BadgeCheck,
+  Languages,
+  Headset,
+  Star,
+  LayoutGrid,
+  CalendarCheck,
+  Compass,
+  type LucideIcon,
+} from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { CtaBanner } from "@/components/HomePage/CtaBanner/CtaBanner";
+import { BlockContent } from "@/components/BlockContent/BlockContent";
 import {
   getAboutPage,
   getAboutPageSeo,
 } from "@/sanity/queries/AboutPage/AboutPage";
+import { getLocalizedPortableText } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import { hotspotToObjectPosition } from "@/sanity/lib/hotspot";
 import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
@@ -18,6 +32,18 @@ interface LocalizedAny {
 }
 const loc = (f: LocalizedAny | undefined | null, l: string) =>
   (l === "es" ? f?.es : f?.en) || f?.en || "";
+
+/** Maps the schema's value icon keys to Lucide icons. */
+const VALUE_ICONS: Record<string, LucideIcon> = {
+  safety: ShieldCheck,
+  local: MapPin,
+  trust: BadgeCheck,
+  bilingual: Languages,
+  support: Headset,
+  reviews: Star,
+  variety: LayoutGrid,
+  booking: CalendarCheck,
+};
 
 export async function generateMetadata({
   params,
@@ -100,14 +126,13 @@ export default async function AboutPage({
                     ? "Una pequeña casa de conserjería con grandes estándares."
                     : "A small concierge house with very large standards.")}
               </h2>
-              {loc(page?.storyBody, locale) && (
-                <p className="mt-6 text-slate text-lg leading-relaxed whitespace-pre-wrap">
-                  {loc(page?.storyBody, locale)}
-                </p>
-              )}
-              {page?.foundedYear && (
+              <BlockContent
+                value={getLocalizedPortableText(page?.storyBody, locale)}
+                className="mt-6"
+              />
+              {loc(page?.foundedLabel, locale) && (
                 <p className="mt-6 text-xs uppercase tracking-[0.18em] text-teal font-heading font-semibold">
-                  {isEs ? "Fundado en" : "Founded in"} {page.foundedYear}
+                  {loc(page?.foundedLabel, locale)}
                 </p>
               )}
             </div>
@@ -147,7 +172,10 @@ export default async function AboutPage({
         <section className="section-white py-24 sm:py-32">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <SectionEyebrow>{isEs ? "Lo que valoramos" : "What we value"}</SectionEyebrow>
+              <SectionEyebrow>
+                {loc(page?.valuesEyebrow, locale) ||
+                  (isEs ? "Lo que valoramos" : "What we value")}
+              </SectionEyebrow>
               <h2 className="mt-5 font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-slate-dark leading-tight tracking-[-0.015em]">
                 {loc(page.valuesHeadline, locale) || (isEs ? "Lo que nos guía." : "What guides us.")}
               </h2>
@@ -158,21 +186,24 @@ export default async function AboutPage({
               )}
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {page.values.map((v, i) => (
-                <RevealOnScroll key={i} delayMs={i * 80}>
-                  <div className="p-8 rounded-2xl border border-sand-dark bg-sand/40 h-full">
-                    <p className="text-xs uppercase tracking-[0.18em] text-teal font-heading font-semibold mb-3">
-                      {v.icon}
-                    </p>
-                    <h3 className="font-heading font-bold text-lg text-slate-dark mb-3">
-                      {loc(v.title, locale)}
-                    </h3>
-                    <p className="text-slate leading-relaxed">
-                      {loc(v.description, locale)}
-                    </p>
-                  </div>
-                </RevealOnScroll>
-              ))}
+              {page.values.map((v, i) => {
+                const Icon = VALUE_ICONS[v.icon] ?? Compass;
+                return (
+                  <RevealOnScroll key={i} delayMs={i * 80}>
+                    <div className="p-8 rounded-2xl border border-sand-dark bg-sand/40 h-full">
+                      <div className="w-12 h-12 rounded-full bg-teal/10 text-teal flex items-center justify-center mb-4">
+                        <Icon size={24} strokeWidth={1.5} aria-hidden />
+                      </div>
+                      <h3 className="font-heading font-bold text-lg text-slate-dark mb-3">
+                        {loc(v.title, locale)}
+                      </h3>
+                      <p className="text-slate leading-relaxed">
+                        {loc(v.description, locale)}
+                      </p>
+                    </div>
+                  </RevealOnScroll>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -231,12 +262,16 @@ export default async function AboutPage({
       )}
 
       <CtaBanner
+        eyebrow={loc(page?.ctaEyebrow, locale) || undefined}
         headline={loc(page?.ctaHeadline, locale)}
         subheadline={loc(page?.ctaSubheadline, locale)}
-        primaryCtaText={loc(page?.ctaButtonText, locale) || (isEs ? "Hablar con conserjería" : "Talk to concierge")}
-        primaryCtaHref="/contact"
-        whatsappNumber={page?.ctaWhatsappNumber}
-        whatsappLabel={loc(page?.ctaContactText, locale)}
+        primaryCtaText={
+          loc(page?.ctaPrimaryButton?.label, locale) ||
+          (isEs ? "Hablar con conserjería" : "Talk to concierge")
+        }
+        primaryCtaHref={page?.ctaPrimaryButton?.href || "/contact"}
+        secondaryCtaText={loc(page?.ctaSecondaryButton?.label, locale)}
+        secondaryCtaHref={page?.ctaSecondaryButton?.href}
       />
     </>
   );

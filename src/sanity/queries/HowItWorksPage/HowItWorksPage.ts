@@ -40,23 +40,28 @@ export interface HowItWorksHeroImage {
 }
 
 export interface HowItWorksPageData {
+  heroEyebrow: LocalizedField;
   heroHeadline: LocalizedField;
   heroSubheadline: LocalizedField;
   heroImage: HowItWorksHeroImage | null;
 
+  stepsEyebrow: LocalizedField;
   stepsHeading: LocalizedField;
   stepsSubheading: LocalizedField;
   steps: BookingStep[];
 
+  faqEyebrow: LocalizedField;
   faqHeading: LocalizedField;
   faqSubheading: LocalizedField;
   faqItems: FaqItem[];
 
+  ctaEyebrow: LocalizedField;
   ctaHeadline: LocalizedField;
   ctaSubheadline: LocalizedField;
   ctaButtonText: LocalizedField;
   ctaButtonHref: string;
-  ctaWhatsappLabel: LocalizedField;
+  ctaSecondaryButtonText: LocalizedField;
+  ctaSecondaryButtonHref: string;
 }
 
 // =============================================================================
@@ -64,6 +69,7 @@ export interface HowItWorksPageData {
 // =============================================================================
 
 export const howItWorksPageQuery = /* groq */ `*[_type == "howItWorksPage"][0]{
+  heroEyebrow,
   heroHeadline,
   heroSubheadline,
   heroImage {
@@ -74,6 +80,7 @@ export const howItWorksPageQuery = /* groq */ `*[_type == "howItWorksPage"][0]{
     hotspot,
     crop
   },
+  stepsEyebrow,
   stepsHeading,
   stepsSubheading,
   steps[] {
@@ -82,17 +89,20 @@ export const howItWorksPageQuery = /* groq */ `*[_type == "howItWorksPage"][0]{
     title,
     description
   },
+  faqEyebrow,
   faqHeading,
   faqSubheading,
   faqItems[] {
     question,
     answer
   },
+  ctaEyebrow,
   ctaHeadline,
   ctaSubheadline,
   ctaButtonText,
   ctaButtonHref,
-  ctaWhatsappLabel
+  ctaSecondaryButtonText,
+  ctaSecondaryButtonHref
 }`;
 
 // =============================================================================

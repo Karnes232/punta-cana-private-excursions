@@ -85,6 +85,8 @@ export interface ContactEmailData {
   email: string;
   phone?: string;
   hotel?: string;
+  travelDate?: string;
+  groupSize?: string;
   excursion?: string;
   message: string;
 }
@@ -125,6 +127,20 @@ export function OperatorContactEmail(data: ContactEmailData) {
               <>
                 <Text style={labelStyle}>Hotel</Text>
                 <Text style={valueStyle}>{data.hotel}</Text>
+              </>
+            ) : null}
+
+            {data.travelDate ? (
+              <>
+                <Text style={labelStyle}>Travel date</Text>
+                <Text style={valueStyle}>{data.travelDate}</Text>
+              </>
+            ) : null}
+
+            {data.groupSize ? (
+              <>
+                <Text style={labelStyle}>Group size</Text>
+                <Text style={valueStyle}>{data.groupSize}</Text>
               </>
             ) : null}
 

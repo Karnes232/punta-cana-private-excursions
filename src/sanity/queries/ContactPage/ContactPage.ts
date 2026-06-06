@@ -6,6 +6,7 @@ import type { LocalizedField } from "../GeneralLayout/generalLayoutQuery";
 // =============================================================================
 
 export interface ContactPageData {
+  heroEyebrow: LocalizedField;
   heroHeadline: LocalizedField;
   heroSubheadline: LocalizedField;
   heroImage: {
@@ -14,6 +15,7 @@ export interface ContactPageData {
     crop?: { top: number; bottom: number; left: number; right: number };
   } | null;
   formHeadline: LocalizedField;
+  formIntroLine: LocalizedField;
   infoHeadline: LocalizedField;
 }
 
@@ -22,6 +24,7 @@ export interface ContactPageData {
 // =============================================================================
 
 const contactPageQuery = /* groq */ `*[_type == "contactPage"][0] {
+  heroEyebrow,
   heroHeadline,
   heroSubheadline,
   heroImage {
@@ -30,6 +33,7 @@ const contactPageQuery = /* groq */ `*[_type == "contactPage"][0] {
     crop
   },
   formHeadline,
+  formIntroLine,
   infoHeadline
 }`;
 

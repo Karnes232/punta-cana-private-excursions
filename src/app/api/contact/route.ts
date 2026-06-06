@@ -9,6 +9,8 @@ interface ContactPayload {
   email: string;
   phone?: string;
   hotel?: string;
+  travelDate?: string;
+  groupSize?: string;
   excursion?: string;
   message: string;
 }
@@ -23,7 +25,9 @@ function isValid(payload: unknown): payload is ContactPayload {
     typeof p.email === "string" &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email) &&
     typeof p.message === "string" &&
-    p.message.trim().length > 0
+    p.message.trim().length > 0 &&
+    (p.travelDate === undefined || typeof p.travelDate === "string") &&
+    (p.groupSize === undefined || typeof p.groupSize === "string")
   );
 }
 

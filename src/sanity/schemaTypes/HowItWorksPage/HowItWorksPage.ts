@@ -20,6 +20,14 @@ export const howItWorksPage = defineType({
     // HERO
     // =========================================================================
     defineField({
+      name: "heroEyebrow",
+      title: "Hero Eyebrow / Kicker",
+      type: "localizedString",
+      group: "hero",
+      description:
+        'Small uppercase label above the headline. e.g. "How it works"',
+    }),
+    defineField({
       name: "heroHeadline",
       title: "Headline",
       type: "localizedString",
@@ -43,6 +51,14 @@ export const howItWorksPage = defineType({
     // =========================================================================
     // STEPS
     // =========================================================================
+    defineField({
+      name: "stepsEyebrow",
+      title: "Steps Eyebrow / Kicker",
+      type: "localizedString",
+      group: "steps",
+      description:
+        'Small uppercase label above the heading. e.g. "Three steps"',
+    }),
     defineField({
       name: "stepsHeading",
       title: "Steps Heading",
@@ -113,6 +129,14 @@ export const howItWorksPage = defineType({
     // FAQ
     // =========================================================================
     defineField({
+      name: "faqEyebrow",
+      title: "FAQ Eyebrow / Kicker",
+      type: "localizedString",
+      group: "faq",
+      description:
+        'Small uppercase label above the heading. e.g. "Frequently asked"',
+    }),
+    defineField({
       name: "faqHeading",
       title: "FAQ Heading",
       type: "localizedString",
@@ -160,6 +184,14 @@ export const howItWorksPage = defineType({
     // CTA
     // =========================================================================
     defineField({
+      name: "ctaEyebrow",
+      title: "CTA Eyebrow / Kicker",
+      type: "localizedString",
+      group: "cta",
+      description:
+        'Small uppercase label above the headline. e.g. "Ready when you are"',
+    }),
+    defineField({
       name: "ctaHeadline",
       title: "CTA Headline",
       type: "localizedString",
@@ -173,21 +205,30 @@ export const howItWorksPage = defineType({
     }),
     defineField({
       name: "ctaButtonText",
-      title: "CTA Button Text",
+      title: "Primary Button Text",
       type: "localizedString",
       group: "cta",
     }),
     defineField({
       name: "ctaButtonHref",
-      title: "CTA Button Href",
+      title: "Primary Button Link",
       type: "string",
       group: "cta",
       initialValue: "/excursions",
     }),
     defineField({
-      name: "ctaWhatsappLabel",
-      title: "WhatsApp Button Label",
+      name: "ctaSecondaryButtonText",
+      title: "Secondary Button Text",
       type: "localizedString",
+      description: 'e.g. "Browse excursions"',
+      group: "cta",
+    }),
+    defineField({
+      name: "ctaSecondaryButtonHref",
+      title: "Secondary Button Link",
+      type: "string",
+      description:
+        'Internal path (e.g. "/excursions") or full URL (e.g. "https://wa.me/18091234567")',
       group: "cta",
     }),
 

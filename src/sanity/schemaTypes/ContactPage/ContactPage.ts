@@ -9,6 +9,13 @@ export const contactPage = defineType({
 
   fields: [
     defineField({
+      name: "heroEyebrow",
+      title: "Hero Eyebrow / Kicker",
+      type: "localizedString",
+      description:
+        'Small uppercase label above the headline. e.g. "Private concierge"',
+    }),
+    defineField({
       name: "heroHeadline",
       title: "Hero Headline",
       type: "localizedString",
@@ -30,6 +37,12 @@ export const contactPage = defineType({
       title: "Form Section Headline",
       type: "localizedString",
       description: "Heading above the contact form column.",
+    }),
+    defineField({
+      name: "formIntroLine",
+      title: "Form Intro Line",
+      type: "localizedText",
+      description: "Short intro text shown below the form headline.",
     }),
     defineField({
       name: "infoHeadline",

@@ -42,24 +42,28 @@ export function ContactForm({ locale, defaultExcursion }: ContactFormProps) {
         email: "Correo electrónico",
         phone: "Teléfono / WhatsApp (opcional)",
         hotel: "Hotel (opcional)",
+        travelDate: "Fecha de viaje (opcional)",
+        groupSize: "Tamaño del grupo (opcional)",
         excursion: "Experiencia de interés (opcional)",
         message: "Mensaje",
         submit: "Enviar a conserjería",
         sending: "Enviando…",
         ok: "Gracias. Te contactaremos dentro de 24 horas.",
-        error: "No pudimos enviar tu mensaje. Por favor intenta de nuevo o escríbenos por WhatsApp.",
+        error: "No pudimos enviar tu mensaje. Por favor intenta de nuevo",
       }
     : {
         name: "Full name",
         email: "Email address",
         phone: "Phone / WhatsApp (optional)",
         hotel: "Hotel (optional)",
+        travelDate: "Travel date (optional)",
+        groupSize: "Group size (optional)",
         excursion: "Experience of interest (optional)",
         message: "Message",
         submit: "Send to concierge",
         sending: "Sending…",
         ok: "Thank you. Our concierge will be in touch within 24 hours.",
-        error: "We couldn't send your message. Please try again or message us on WhatsApp.",
+        error: "We couldn't send your message. Please try again",
       };
 
   if (status === "ok") {
@@ -79,6 +83,10 @@ export function ContactForm({ locale, defaultExcursion }: ContactFormProps) {
       <Field name="email" label={t.email} type="email" required />
       <Field name="phone" label={t.phone} />
       <Field name="hotel" label={t.hotel} />
+      <div className="grid sm:grid-cols-2 gap-5">
+        <Field name="travelDate" label={t.travelDate} type="date" />
+        <Field name="groupSize" label={t.groupSize} type="number" min={1} />
+      </div>
       <Field name="excursion" label={t.excursion} defaultValue={defaultExcursion} />
       <div>
         <label className="block text-xs font-heading font-semibold uppercase tracking-[0.14em] text-slate-dark mb-2">
@@ -116,12 +124,14 @@ function Field({
   type = "text",
   required,
   defaultValue,
+  min,
 }: {
   name: string;
   label: string;
   type?: string;
   required?: boolean;
   defaultValue?: string;
+  min?: number;
 }) {
   return (
     <div>
@@ -133,6 +143,7 @@ function Field({
         type={type}
         required={required}
         defaultValue={defaultValue}
+        min={min}
         className="w-full px-4 py-3 rounded-xl border border-sand-dark bg-white text-slate focus:outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/10 transition-colors"
       />
     </div>

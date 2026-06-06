@@ -600,17 +600,20 @@ const aboutPage = {
 const howItWorksPage = {
   _id: "howItWorksPage",
   _type: "howItWorksPage",
+  heroEyebrow: { en: "How it works", es: "Cómo funciona" },
   heroHeadline: { en: "Booking is simple.", es: "Reservar es sencillo." },
   heroSubheadline: {
     en: "Three short steps between you and a perfect private day.",
     es: "Tres pasos cortos entre tú y un día privado perfecto.",
   },
+  stepsEyebrow: { en: "Three steps", es: "Tres pasos" },
   stepsHeading: { en: "Three steps", es: "Tres pasos" },
   stepsSubheading: {
     en: "From inquiry to hotel pickup, it's clear and personal.",
     es: "Desde la consulta hasta la recogida, todo claro y personal.",
   },
   steps: homePage.bookingSteps.map((s) => ({ ...s })),
+  faqEyebrow: { en: "Frequently asked", es: "Preguntas frecuentes" },
   faqHeading: {
     en: "Frequently asked",
     es: "Preguntas frecuentes",
@@ -620,6 +623,7 @@ const howItWorksPage = {
     es: "Respuestas rápidas a preguntas comunes.",
   },
   faqItems: homePage.faqPreviewItems.map((f) => ({ ...f })),
+  ctaEyebrow: { en: "Ready when you are", es: "Cuando tú digas" },
   ctaHeadline: { en: "Ready to design your day?", es: "¿Listo para diseñar tu día?" },
   ctaSubheadline: {
     en: "Tell us what you have in mind. We'll handle the rest.",
@@ -627,7 +631,8 @@ const howItWorksPage = {
   },
   ctaButtonText: { en: "Get started", es: "Empezar" },
   ctaButtonHref: "/contact",
-  ctaWhatsappLabel: { en: "WhatsApp", es: "WhatsApp" },
+  ctaSecondaryButtonText: { en: "Browse excursions", es: "Ver excursiones" },
+  ctaSecondaryButtonHref: "/excursions",
 };
 
 // =============================================================================
@@ -743,6 +748,7 @@ const faqPage = {
 const contactPage = {
   _id: "contactPage",
   _type: "contactPage",
+  heroEyebrow: { en: "Private concierge", es: "Conserjería privada" },
   heroHeadline: {
     en: "Let's design your day together.",
     es: "Diseñemos tu día juntos.",
@@ -754,6 +760,10 @@ const contactPage = {
   formHeadline: {
     en: "Tell us about your trip",
     es: "Cuéntanos sobre tu viaje",
+  },
+  formIntroLine: {
+    en: "Share a few details and our concierge will craft a plan around your group — no obligation, no pressure.",
+    es: "Comparte algunos detalles y nuestra conserjería diseñará un plan para tu grupo — sin compromiso, sin presión.",
   },
   infoHeadline: {
     en: "Other ways to reach us",

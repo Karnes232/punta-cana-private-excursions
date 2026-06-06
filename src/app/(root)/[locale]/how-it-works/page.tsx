@@ -50,7 +50,9 @@ export default async function HowItWorksPage({
   return (
     <>
       <PageHero
-        eyebrow={isEs ? "Cómo funciona" : "How it works"}
+        eyebrow={
+          page?.heroEyebrow?.[lk] || (isEs ? "Cómo funciona" : "How it works")
+        }
         headline={
           page?.heroHeadline?.[lk] ??
           (isEs ? "Reservar es sencillo." : "Booking is simple.")
@@ -69,7 +71,9 @@ export default async function HowItWorksPage({
       />
 
       <HowBookingWorks
-        eyebrow={isEs ? "Tres pasos" : "Three steps"}
+        eyebrow={
+          page?.stepsEyebrow?.[lk] || (isEs ? "Tres pasos" : "Three steps")
+        }
         heading={page?.stepsHeading?.[lk]}
         subheading={page?.stepsSubheading?.[lk]}
         steps={
@@ -84,7 +88,10 @@ export default async function HowItWorksPage({
 
       {page?.faqItems && page.faqItems.length > 0 && (
         <FaqPreview
-          eyebrow={isEs ? "Preguntas frecuentes" : "Frequently asked"}
+          eyebrow={
+            page?.faqEyebrow?.[lk] ||
+            (isEs ? "Preguntas frecuentes" : "Frequently asked")
+          }
           heading={page?.faqHeading?.[lk]}
           subheading={page?.faqSubheading?.[lk]}
           faqs={page.faqItems.map((f) => ({
@@ -95,11 +102,13 @@ export default async function HowItWorksPage({
       )}
 
       <CtaBanner
+        eyebrow={page?.ctaEyebrow?.[lk] || undefined}
         headline={page?.ctaHeadline?.[lk]}
         subheadline={page?.ctaSubheadline?.[lk]}
         primaryCtaText={page?.ctaButtonText?.[lk] ?? (isEs ? "Empezar" : "Get started")}
         primaryCtaHref={page?.ctaButtonHref ?? "/contact"}
-        whatsappLabel={page?.ctaWhatsappLabel?.[lk]}
+        secondaryCtaText={page?.ctaSecondaryButtonText?.[lk]}
+        secondaryCtaHref={page?.ctaSecondaryButtonHref}
       />
     </>
   );

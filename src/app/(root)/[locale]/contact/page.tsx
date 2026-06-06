@@ -56,7 +56,10 @@ export default async function ContactPage({
   return (
     <>
       <PageHero
-        eyebrow={isEs ? "Conserjería privada" : "Private concierge"}
+        eyebrow={
+          page?.heroEyebrow?.[lk] ||
+          (isEs ? "Conserjería privada" : "Private concierge")
+        }
         headline={
           page?.heroHeadline?.[lk] ??
           (isEs
@@ -79,10 +82,17 @@ export default async function ContactPage({
       <section className="section-white py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-[1.4fr_1fr] gap-12">
           <div>
-            <h2 className="font-heading font-bold text-2xl sm:text-3xl text-slate-dark mb-8 tracking-[-0.015em]">
+            <h2 className="font-heading font-bold text-2xl sm:text-3xl text-slate-dark tracking-[-0.015em]">
               {page?.formHeadline?.[lk] ?? (isEs ? "Cuéntanos sobre tu viaje" : "Tell us about your trip")}
             </h2>
-            <ContactForm locale={typedLocale} defaultExcursion={sp.excursion} />
+            {page?.formIntroLine?.[lk] && (
+              <p className="mt-4 text-slate leading-relaxed">
+                {page.formIntroLine[lk]}
+              </p>
+            )}
+            <div className="mt-8">
+              <ContactForm locale={typedLocale} defaultExcursion={sp.excursion} />
+            </div>
           </div>
 
           <aside className="lg:pl-8 lg:border-l border-sand-dark">
@@ -102,23 +112,16 @@ export default async function ContactPage({
                   </dd>
                 </div>
               )}
-              {layout?.phone && (
+          
                 <div>
                   <dt className="text-xs uppercase tracking-[0.16em] text-gray-dark font-heading font-semibold mb-1">
-                    WhatsApp
+                  {isEs ? "Horario del concierge" : "Concierge hours area"}
                   </dt>
                   <dd>
-                    <a
-                      href={`https://wa.me/${layout.phone.replace(/[^0-9]/g, "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-ocean hover:underline"
-                    >
-                      {layout.phone}
-                    </a>
+                  {isEs ? "Todos los días, 8am – 9pm AST" : "Daily, 8am – 9pm AST"}
                   </dd>
                 </div>
-              )}
+
               {layout?.serviceArea && (
                 <div>
                   <dt className="text-xs uppercase tracking-[0.16em] text-gray-dark font-heading font-semibold mb-1">

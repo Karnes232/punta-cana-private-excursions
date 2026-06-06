@@ -19,6 +19,7 @@ import { canonicalSlug } from "@/sanity/lib/resolveSlug";
 import {
   getGeneralLayout,
   getLocalized,
+  getLocalizedPortableText,
   type LocalizedField,
 } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 
@@ -105,6 +106,7 @@ export default async function Home({ params }: HomeProps) {
               })()
             : undefined
         }
+        eyebrow={homePage?.heroEyebrow?.[lk] || undefined}
         headline={homePage?.heroHeadline?.[lk]}
         subheadline={homePage?.heroSubheadline?.[lk]}
         primaryCTA={
@@ -138,10 +140,11 @@ export default async function Home({ params }: HomeProps) {
         }
         tagline={homePage?.brandIntroTagline?.[lk]}
         heading={homePage?.brandIntroHeading?.[lk]}
-        body={homePage?.brandIntroBody?.[lk]}
+        body={getLocalizedPortableText(homePage?.brandIntroBody, locale)}
       />
 
       <FeaturedExcursions
+        eyebrow={homePage?.featuredEyebrow?.[lk] || undefined}
         heading={homePage?.featuredHeading?.[lk]}
         subheading={homePage?.featuredSubheading?.[lk]}
         viewAllText={homePage?.featuredViewAllText?.[lk]}
@@ -163,6 +166,7 @@ export default async function Home({ params }: HomeProps) {
       />
 
       <ExcursionCategories
+        eyebrow={homePage?.categoriesEyebrow?.[lk] || undefined}
         heading={homePage?.categoriesHeading?.[lk]}
         subheading={homePage?.categoriesSubheading?.[lk]}
         categories={categories.map((cat) => ({
@@ -178,6 +182,7 @@ export default async function Home({ params }: HomeProps) {
       />
 
       <WhyChooseUs
+        eyebrow={homePage?.whyChooseUsEyebrow?.[lk] || undefined}
         heading={homePage?.whyChooseUsHeading?.[lk]}
         subheading={homePage?.whyChooseUsSubheading?.[lk]}
         pillars={
@@ -190,6 +195,7 @@ export default async function Home({ params }: HomeProps) {
       />
 
       <HowBookingWorks
+        eyebrow={homePage?.howBookingWorksEyebrow?.[lk] || undefined}
         heading={homePage?.howBookingWorksHeading?.[lk]}
         subheading={homePage?.howBookingWorksSubheading?.[lk]}
         steps={
@@ -203,6 +209,7 @@ export default async function Home({ params }: HomeProps) {
       />
 
       <Reviews
+        eyebrow={homePage?.reviewsEyebrow?.[lk] || undefined}
         heading={homePage?.reviewsHeading?.[lk]}
         subheading={homePage?.reviewsSubheading?.[lk]}
         reviews={
@@ -217,6 +224,7 @@ export default async function Home({ params }: HomeProps) {
       />
 
       <FaqPreview
+        eyebrow={homePage?.faqPreviewEyebrow?.[lk] || undefined}
         heading={homePage?.faqPreviewHeading?.[lk]}
         subheading={homePage?.faqPreviewSubheading?.[lk]}
         faqs={
@@ -229,11 +237,13 @@ export default async function Home({ params }: HomeProps) {
       />
 
       <CtaBanner
+        eyebrow={homePage?.ctaBannerEyebrow?.[lk] || undefined}
         headline={homePage?.ctaBannerHeadline?.[lk]}
         subheadline={homePage?.ctaBannerSubheadline?.[lk]}
         primaryCtaText={homePage?.ctaBannerButtonText?.[lk]}
         primaryCtaHref={homePage?.ctaBannerButtonHref}
-        whatsappLabel={homePage?.ctaBannerWhatsappLabel?.[lk]}
+        secondaryCtaText={homePage?.ctaBannerSecondaryButtonText?.[lk]}
+        secondaryCtaHref={homePage?.ctaBannerSecondaryButtonHref}
       />
     </>
   );

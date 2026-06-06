@@ -1,6 +1,8 @@
 import Image from "next/image";
+import type { PortableTextBlock } from "@portabletext/types";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { BlockContent } from "@/components/BlockContent/BlockContent";
 import {
   hotspotToObjectPosition,
   type SanityHotspot,
@@ -15,7 +17,7 @@ interface BrandIntroProps {
   };
   tagline?: string;
   heading?: string;
-  body?: string;
+  body?: PortableTextBlock[];
 }
 
 export function BrandIntro({ image, tagline, heading, body }: BrandIntroProps) {
@@ -51,9 +53,7 @@ export function BrandIntro({ image, tagline, heading, body }: BrandIntroProps) {
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-slate-dark leading-[1.1] tracking-[-0.015em]">
               {heading || "An experience built around you, not a schedule."}
             </h2>
-            {body && (
-              <p className="mt-6 text-slate text-lg leading-relaxed">{body}</p>
-            )}
+            <BlockContent value={body} className="mt-6" />
           </div>
         </RevealOnScroll>
       </div>

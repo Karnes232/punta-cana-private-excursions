@@ -157,6 +157,7 @@ const homePage = {
     en: "A private yacht anchored in turquoise Caribbean water at sunset",
     es: "Un yate privado anclado en agua turquesa del Caribe al atardecer",
   },
+  heroEyebrow: { en: "VIP · Punta Cana", es: "VIP · Punta Cana" },
   heroHeadline: {
     en: "Private excursions, crafted for you.",
     es: "Excursiones privadas, hechas a tu medida.",
@@ -181,14 +182,15 @@ const homePage = {
     en: "An experience built around you, not a schedule.",
     es: "Una experiencia diseñada en torno a ti, no a un horario.",
   },
-  brandIntroBody: {
-    en: "We don't sell seats on shared boats. Every excursion is yours alone — your group, your pace, your guide. From private catamarans to bespoke fishing charters and helicopter day trips, we curate experiences with the kind of attention you'd expect from a five-star hotel.",
-    es: "No vendemos asientos en barcos compartidos. Cada excursión es solo tuya — tu grupo, tu ritmo, tu guía. Desde catamaranes privados hasta charters de pesca a medida y excursiones en helicóptero, curamos experiencias con la atención de un hotel cinco estrellas.",
-  },
+  brandIntroBody: block(
+    "We don't sell seats on shared boats. Every excursion is yours alone — your group, your pace, your guide. From private catamarans to bespoke fishing charters and helicopter day trips, we curate experiences with the kind of attention you'd expect from a five-star hotel.",
+    "No vendemos asientos en barcos compartidos. Cada excursión es solo tuya — tu grupo, tu ritmo, tu guía. Desde catamaranes privados hasta charters de pesca a medida y excursiones en helicóptero, curamos experiencias con la atención de un hotel cinco estrellas.",
+  ),
   brandIntroImageAlt: {
     en: "A private guide setting up a beach picnic for a small group",
     es: "Un guía privado preparando un picnic en la playa para un grupo pequeño",
   },
+  featuredEyebrow: { en: "Hand-picked", es: "Selección exclusiva" },
   featuredHeading: {
     en: "Featured private experiences.",
     es: "Experiencias privadas destacadas.",
@@ -201,6 +203,7 @@ const homePage = {
     en: "See all experiences",
     es: "Ver todas las experiencias",
   },
+  categoriesEyebrow: { en: "Explore", es: "Explora" },
   categoriesHeading: {
     en: "Categories of private experience.",
     es: "Categorías de experiencias privadas.",
@@ -209,6 +212,7 @@ const homePage = {
     en: "Browse by mood — sea, sky, land, or culinary.",
     es: "Explora por estado de ánimo — mar, cielo, tierra o gastronomía.",
   },
+  whyChooseUsEyebrow: { en: "Why us", es: "Por qué nosotros" },
   whyChooseUsHeading: {
     en: "The difference is in the details.",
     es: "La diferencia está en los detalles.",
@@ -255,6 +259,7 @@ const homePage = {
       },
     },
   ],
+  howBookingWorksEyebrow: { en: "How it works", es: "Cómo funciona" },
   howBookingWorksHeading: {
     en: "Three simple steps.",
     es: "Tres pasos sencillos.",
@@ -295,6 +300,7 @@ const homePage = {
       },
     },
   ],
+  reviewsEyebrow: { en: "Guest stories", es: "Historias de huéspedes" },
   reviewsHeading: { en: "What our guests say.", es: "Lo que dicen nuestros huéspedes." },
   reviewsSubheading: {
     en: "Honest words from real travelers.",
@@ -335,6 +341,7 @@ const homePage = {
       excursionTitle: "Helicopter & Saona Combo",
     },
   ],
+  faqPreviewEyebrow: { en: "Frequently asked", es: "Preguntas frecuentes" },
   faqPreviewHeading: {
     en: "Good questions, clear answers.",
     es: "Buenas preguntas, respuestas claras.",
@@ -382,6 +389,7 @@ const homePage = {
     en: "See all questions",
     es: "Ver todas las preguntas",
   },
+  ctaBannerEyebrow: { en: "Ready when you are", es: "Cuando tú digas" },
   ctaBannerHeadline: {
     en: "Let's plan your private day.",
     es: "Diseñemos tu día privado.",
@@ -392,7 +400,8 @@ const homePage = {
   },
   ctaBannerButtonText: { en: "Talk to concierge", es: "Hablar con conserjería" },
   ctaBannerButtonHref: "/contact",
-  ctaBannerWhatsappLabel: { en: "Message on WhatsApp", es: "Mensaje por WhatsApp" },
+  ctaBannerSecondaryButtonText: { en: "Browse excursions", es: "Ver excursiones" },
+  ctaBannerSecondaryButtonHref: "/excursions",
 };
 
 // =============================================================================

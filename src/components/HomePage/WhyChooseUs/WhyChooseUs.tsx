@@ -90,6 +90,7 @@ function PillarIcon({ kind }: { kind: string }) {
       );
     case "reviews":
     case "rating":
+    case "experience":
       return (
         <svg {...common}>
           <path d="m12 3 2.6 5.6 6.1.6-4.5 4.2 1.2 6L12 16.7 6.6 19.4l1.2-6L3.3 9.2l6.1-.6L12 3Z" />
@@ -123,6 +124,7 @@ function PillarIcon({ kind }: { kind: string }) {
       );
     case "trust":
     case "verified":
+    case "certified":
       return (
         <svg {...common}>
           <path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z" />

@@ -21,10 +21,9 @@ interface CTA {
   href: string;
 }
 
-interface TrustPillar {
-  icon: string;
+interface TrustCard {
   title: LocalizedString;
-  description: LocalizedText;
+  text: LocalizedText;
 }
 
 export interface DivingExcursionCard {
@@ -61,12 +60,15 @@ export interface DivingSnorkelingPageData {
   introBody: LocalizedBlockContent;
   introImage: { url: string; lqip?: string };
   introStats: Array<{ value: LocalizedString; label: LocalizedString }>;
+  excursionsEyebrow: LocalizedString;
+  excursionsHeading: LocalizedString;
   coursesHeading: LocalizedString;
   coursesSubheading: LocalizedText;
   certifiedHeading: LocalizedString;
   certifiedSubheading: LocalizedText;
+  trustEyebrow: LocalizedString;
   trustHeadline: LocalizedString;
-  trustPillars: TrustPillar[];
+  trustCards: TrustCard[];
   ctaHeadline: LocalizedString;
   ctaButtonText: LocalizedString;
   ctaWhatsappNumber: string;
@@ -126,12 +128,15 @@ export const divingSnorkelingPageQuery = /* groq */ `*[_type == "divingSnorkelin
     "lqip": asset->metadata.lqip
   },
   introStats[] { value, label },
+  excursionsEyebrow,
+  excursionsHeading,
   coursesHeading,
   coursesSubheading,
   certifiedHeading,
   certifiedSubheading,
+  trustEyebrow,
   trustHeadline,
-  trustPillars[] { icon, title, description },
+  trustCards[] { title, text },
   ctaHeadline,
   ctaButtonText,
   ctaWhatsappNumber,
@@ -145,8 +150,8 @@ export const divingSnorkelingPageQuery = /* groq */ `*[_type == "divingSnorkelin
 export const scubaDivingExcursionsQuery = /* groq */ `*[_type == "divingExcursion"] | order(sortOrder asc) ${excursionCardProjection}`;
 
 export const scubaDivingExcursionsByAudienceQuery = /* groq */ `{
-  "courses":   *[_type == "divingExcursion" && audienceType == "course"]    | order(sortOrder asc) ${excursionCardProjection},
-  "certified": *[_type == "divingExcursion" && audienceType == "certified"] | order(sortOrder asc) ${excursionCardProjection}
+  "courses":   *[_type == "divingExcursion" && audienceType in ["course", "all"]] | order(sortOrder asc) ${excursionCardProjection},
+  "certified": *[_type == "divingExcursion" && audienceType == "certified"]       | order(sortOrder asc) ${excursionCardProjection}
 }`;
 
 // =============================================================================

@@ -458,10 +458,88 @@ const divingSnorkelingPage = {
     "Whether you're certifying for the first time or you're a seasoned diver chasing a specific wreck, we charter the boat just for your group. PADI-certified guides, top equipment, and pickup from your resort.",
     "Ya sea que te estés certificando por primera vez o seas un buzo experimentado buscando un naufragio específico, charteamos el barco solo para tu grupo. Guías certificados PADI, equipo de primer nivel y recogida en tu resort.",
   ),
+  introStats: [
+    {
+      _key: "is1",
+      value: { en: "PADI", es: "PADI" },
+      label: { en: "Certified team", es: "Equipo certificado" },
+    },
+    {
+      _key: "is2",
+      value: { en: "10+", es: "10+" },
+      label: { en: "Years guiding", es: "Años guiando" },
+    },
+    {
+      _key: "is3",
+      value: { en: "1,500+", es: "1,500+" },
+      label: { en: "Dives completed", es: "Inmersiones completadas" },
+    },
+    {
+      _key: "is4",
+      value: { en: "100%", es: "100%" },
+      label: { en: "Private charters", es: "Charters privados" },
+    },
+  ],
+  excursionsEyebrow: { en: "Our charters", es: "Nuestros charters" },
+  excursionsHeading: {
+    en: "Choose your underwater day.",
+    es: "Elige tu día bajo el agua.",
+  },
+  coursesHeading: {
+    en: "Diving courses & certifications",
+    es: "Cursos y certificaciones de buceo",
+  },
+  coursesSubheading: {
+    en: "Learn to dive or level up — private instruction from PADI pros.",
+    es: "Aprende a bucear o sube de nivel — instrucción privada de profesionales PADI.",
+  },
+  certifiedHeading: {
+    en: "For certified divers",
+    es: "Para buzos certificados",
+  },
+  certifiedSubheading: {
+    en: "Wrecks, walls, and reefs for divers with certification in hand.",
+    es: "Naufragios, paredes y arrecifes para buzos con certificación en mano.",
+  },
+  trustEyebrow: { en: "Why us", es: "Por qué nosotros" },
   trustHeadline: {
     en: "Safety, comfort, and exclusivity.",
     es: "Seguridad, comodidad y exclusividad.",
   },
+  trustCards: [
+    {
+      _key: "tc1",
+      title: { en: "PADI-certified guides", es: "Guías certificados PADI" },
+      text: {
+        en: "Every dive master is PADI-certified with years of experience on these exact sites.",
+        es: "Cada dive master está certificado por PADI con años de experiencia en estos mismos sitios.",
+      },
+    },
+    {
+      _key: "tc2",
+      title: { en: "Safety first, always", es: "Seguridad primero, siempre" },
+      text: {
+        en: "Top-maintained equipment, small groups, and conservative dive plans — no exceptions.",
+        es: "Equipo en óptimas condiciones, grupos pequeños y planes de buceo conservadores — sin excepciones.",
+      },
+    },
+    {
+      _key: "tc3",
+      title: { en: "Your boat, your group", es: "Tu barco, tu grupo" },
+      text: {
+        en: "We never mix parties. The boat, the schedule, and the sites are yours alone.",
+        es: "Nunca mezclamos grupos. El barco, el horario y los sitios son solo tuyos.",
+      },
+    },
+    {
+      _key: "tc4",
+      title: { en: "Local site knowledge", es: "Conocimiento local" },
+      text: {
+        en: "Our guides grew up on this coast and know where the reef is healthiest each season.",
+        es: "Nuestros guías crecieron en esta costa y saben dónde está el arrecife más saludable cada temporada.",
+      },
+    },
+  ],
   ctaHeadline: {
     en: "Let's design your private day underwater.",
     es: "Diseñemos tu día privado bajo el agua.",

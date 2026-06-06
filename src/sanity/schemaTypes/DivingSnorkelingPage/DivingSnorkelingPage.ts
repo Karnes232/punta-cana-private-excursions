@@ -199,6 +199,24 @@ export const divingSnorkelingPage = defineType({
     // =========================================================================
 
     defineField({
+      name: "excursionsEyebrow",
+      title: "Excursions Eyebrow / Kicker",
+      type: "localizedString",
+      description:
+        'Small uppercase label above the main excursions heading. e.g. "Our charters"',
+      group: "excursionSections",
+    }),
+
+    defineField({
+      name: "excursionsHeading",
+      title: "Excursions Main Heading",
+      type: "localizedString",
+      description:
+        'Main heading shown above both the Courses and Certified Divers groups. e.g. "Choose your underwater day"',
+      group: "excursionSections",
+    }),
+
+    defineField({
       name: "coursesHeading",
       title: "Courses Section Heading",
       type: "localizedString",
@@ -237,33 +255,33 @@ export const divingSnorkelingPage = defineType({
     // =========================================================================
 
     defineField({
+      name: "trustEyebrow",
+      title: "Trust Section Eyebrow / Kicker",
+      type: "localizedString",
+      description: 'Small uppercase label above the heading. e.g. "Why us"',
+      group: "trust",
+    }),
+
+    defineField({
       name: "trustHeadline",
-      title: "Trust Section Headline",
+      title: "Trust Section Heading",
       type: "localizedString",
       description: 'e.g. "Why Book Your Water Adventures With Grand Bay"',
       group: "trust",
     }),
 
     defineField({
-      name: "trustPillars",
-      title: "Trust Pillars",
+      name: "trustCards",
+      title: "Trust Cards",
       type: "array",
-      description: "3-4 trust points with icons, titles, and descriptions.",
+      description: "Four cards, each with a title and text.",
       group: "trust",
       of: [
         {
           type: "object",
-          name: "trustPillar",
-          title: "Trust Pillar",
+          name: "trustCard",
+          title: "Card",
           fields: [
-            defineField({
-              name: "icon",
-              title: "Icon Name",
-              type: "string",
-              description:
-                'Icon identifier used by the frontend, e.g. "certified", "experience", "safety", "local"',
-              validation: (rule) => rule.required(),
-            }),
             defineField({
               name: "title",
               title: "Title",
@@ -271,21 +289,18 @@ export const divingSnorkelingPage = defineType({
               validation: (rule) => rule.required(),
             }),
             defineField({
-              name: "description",
-              title: "Description",
+              name: "text",
+              title: "Text",
               type: "localizedText",
               validation: (rule) => rule.required(),
             }),
           ],
           preview: {
-            select: { title: "title.en", icon: "icon" },
-            prepare({ title, icon }) {
-              return { title: title || "Untitled", subtitle: icon };
-            },
+            select: { title: "title.en", subtitle: "text.en" },
           },
         },
       ],
-      validation: (rule) => rule.max(6),
+      validation: (rule) => rule.max(4),
     }),
 
     // =========================================================================

@@ -80,7 +80,7 @@ export default async function ContactPage({
       />
 
       <section className="section-white py-20 sm:py-28">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-[1.4fr_1fr] gap-12">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-[2fr_1fr] gap-12">
           <div>
             <h2 className="font-heading font-bold text-2xl sm:text-3xl text-slate-dark tracking-[-0.015em]">
               {page?.formHeadline?.[lk] ?? (isEs ? "Cuéntanos sobre tu viaje" : "Tell us about your trip")}
@@ -96,6 +96,7 @@ export default async function ContactPage({
           </div>
 
           <aside className="lg:pl-8 lg:border-l border-sand-dark">
+            <div className="lg:sticky lg:top-28">
             <h3 className="font-heading font-bold text-xl text-slate-dark mb-6 tracking-[-0.015em]">
               {page?.infoHeadline?.[lk] ?? (isEs ? "Otras formas de contactarnos" : "Other ways to reach us")}
             </h3>
@@ -139,6 +140,7 @@ export default async function ContactPage({
                 </div>
               )}
             </dl>
+            </div>
           </aside>
         </div>
       </section>

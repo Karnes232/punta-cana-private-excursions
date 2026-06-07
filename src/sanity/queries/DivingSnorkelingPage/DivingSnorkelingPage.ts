@@ -26,6 +26,11 @@ interface TrustCard {
   text: LocalizedText;
 }
 
+interface FaqItem {
+  question: LocalizedString;
+  answer: LocalizedText;
+}
+
 export interface DivingExcursionCard {
   _id: string;
   title: LocalizedString;
@@ -69,6 +74,10 @@ export interface DivingSnorkelingPageData {
   trustEyebrow: LocalizedString;
   trustHeadline: LocalizedString;
   trustCards: TrustCard[];
+  faqEyebrow: LocalizedString;
+  faqHeading: LocalizedString;
+  faqItems: FaqItem[];
+  faqCtaText: LocalizedString;
   ctaHeadline: LocalizedString;
   ctaButtonText: LocalizedString;
   ctaWhatsappNumber: string;
@@ -137,6 +146,10 @@ export const divingSnorkelingPageQuery = /* groq */ `*[_type == "divingSnorkelin
   trustEyebrow,
   trustHeadline,
   trustCards[] { title, text },
+  faqEyebrow,
+  faqHeading,
+  faqItems[] { question, answer },
+  faqCtaText,
   ctaHeadline,
   ctaButtonText,
   ctaWhatsappNumber,

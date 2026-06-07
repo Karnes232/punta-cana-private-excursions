@@ -411,6 +411,7 @@ const homePage = {
 const excursionsPage = {
   _id: "excursionsPage",
   _type: "excursionsPage",
+  heroEyebrow: { en: "Private catalog", es: "Catálogo privado" },
   heroHeadline: {
     en: "Private experiences, hand-curated.",
     es: "Experiencias privadas, curadas a mano.",
@@ -419,16 +420,34 @@ const excursionsPage = {
     en: "Browse our private catalog, or message our concierge to design something entirely yours.",
     es: "Explora nuestro catálogo privado o escríbele a nuestra conserjería para diseñar algo totalmente tuyo.",
   },
+  introEyebrow: { en: "Hand-curated", es: "Curado a mano" },
+  introHeadline: {
+    en: "Every excursion, vetted by us first.",
+    es: "Cada excursión, verificada primero por nosotros.",
+  },
+  introBody: block(
+    "Before anything enters this catalog, we've done it ourselves — same boat, same guide, same route. If it doesn't meet the standard we'd want for our own family, it doesn't make the list. Browse with confidence, or tell our concierge what you're dreaming of and we'll shape it around your group.",
+    "Antes de que algo entre en este catálogo, lo hemos hecho nosotros mismos — el mismo barco, el mismo guía, la misma ruta. Si no cumple el estándar que querríamos para nuestra propia familia, no entra en la lista. Explora con confianza, o cuéntale a nuestra conserjería lo que sueñas y lo adaptaremos a tu grupo.",
+  ),
+  outroHeading: {
+    en: "Private excursions in Punta Cana, done properly.",
+    es: "Excursiones privadas en Punta Cana, hechas como se debe.",
+  },
+  outroBody: block(
+    "A private excursion means your group only — your own boat, vehicle, or guide, on your schedule. We operate across Punta Cana, Bávaro, and Cap Cana with hotel pickup included, bilingual guides, and concierge support on WhatsApp from booking to drop-off.",
+    "Una excursión privada significa solo tu grupo — tu propio barco, vehículo o guía, en tu horario. Operamos en Punta Cana, Bávaro y Cap Cana con recogida en el hotel incluida, guías bilingües y soporte de conserjería por WhatsApp desde la reserva hasta el regreso.",
+  ),
+  ctaEyebrow: { en: "Bespoke by default", es: "A medida por defecto" },
   ctaHeadline: {
     en: "Don't see your perfect day?",
     es: "¿No ves tu día perfecto?",
   },
-  ctaDescription: {
+  ctaSubheadline: {
     en: "Many of our finest experiences are fully bespoke. Tell us what you're imagining — we'll build it.",
     es: "Muchas de nuestras mejores experiencias son totalmente a medida. Cuéntanos lo que imaginas — lo construimos.",
   },
-  ctaWhatsappButtonText: { en: "WhatsApp our concierge", es: "WhatsApp a la conserjería" },
-  ctaContactButtonText: { en: "Send a message", es: "Enviar un mensaje" },
+  ctaButtonText: { en: "Send a message", es: "Enviar un mensaje" },
+  ctaButtonHref: "/contact",
 };
 
 // =============================================================================
@@ -540,6 +559,47 @@ const divingSnorkelingPage = {
       },
     },
   ],
+  faqEyebrow: { en: "Frequently asked", es: "Preguntas frecuentes" },
+  faqHeading: {
+    en: "Diving questions, answered.",
+    es: "Preguntas de buceo, respondidas.",
+  },
+  faqItems: [
+    {
+      _key: "df1",
+      question: {
+        en: "Do I need a certification to dive with you?",
+        es: "¿Necesito certificación para bucear con ustedes?",
+      },
+      answer: {
+        en: "Not for everything. Discover Scuba experiences and snorkeling need no certification — a PADI pro guides you the whole time. Wreck and deep dives require Open Water or equivalent.",
+        es: "No para todo. Las experiencias Discover Scuba y el snorkel no requieren certificación — un profesional PADI te guía todo el tiempo. Los naufragios y buceos profundos requieren Open Water o equivalente.",
+      },
+    },
+    {
+      _key: "df2",
+      question: {
+        en: "Is all the equipment included?",
+        es: "¿Está incluido todo el equipo?",
+      },
+      answer: {
+        en: "Yes — masks, fins, BCDs, regulators, and wetsuits are included and maintained to dive-shop standards. Just bring a swimsuit, towel, and reef-safe sunscreen.",
+        es: "Sí — máscaras, aletas, BCDs, reguladores y trajes de neopreno están incluidos y mantenidos a estándares profesionales. Solo trae traje de baño, toalla y protector solar reef-safe.",
+      },
+    },
+    {
+      _key: "df3",
+      question: {
+        en: "What if the weather turns bad?",
+        es: "¿Qué pasa si el clima empeora?",
+      },
+      answer: {
+        en: "Safety first — if conditions aren't right, we reschedule to another day or refund your deposit in full. Your call.",
+        es: "La seguridad primero — si las condiciones no son adecuadas, reprogramamos para otro día o reembolsamos tu depósito completo. Tú decides.",
+      },
+    },
+  ],
+  faqCtaText: { en: "View all FAQs", es: "Ver todas las preguntas" },
   ctaHeadline: {
     en: "Let's design your private day underwater.",
     es: "Diseñemos tu día privado bajo el agua.",
@@ -878,6 +938,7 @@ const contactPage = {
 const blogPage = {
   _id: "blogPage",
   _type: "blogPage",
+  heroEyebrow: { en: "Journal", es: "Revista" },
   heroHeadline: {
     en: "Stories, guides, and tips from Punta Cana.",
     es: "Historias, guías y consejos de Punta Cana.",
@@ -886,6 +947,19 @@ const blogPage = {
     en: "From our concierge team — what we'd tell our friends visiting the coast.",
     es: "De nuestro equipo de conserjería — lo que le diríamos a nuestros amigos que visitan la costa.",
   },
+  ctaEyebrow: { en: "Ready when you are", es: "Cuando tú digas" },
+  ctaHeadline: {
+    en: "Done reading? Let's plan the real thing.",
+    es: "¿Listo para vivirlo en persona?",
+  },
+  ctaSubheadline: {
+    en: "Our concierge turns these guides into your itinerary.",
+    es: "Nuestra conserjería convierte estas guías en tu itinerario.",
+  },
+  ctaButtonText: { en: "Talk to concierge", es: "Hablar con conserjería" },
+  ctaButtonHref: "/contact",
+  ctaSecondaryButtonText: { en: "Browse excursions", es: "Ver excursiones" },
+  ctaSecondaryButtonHref: "/excursions",
 };
 
 // =============================================================================

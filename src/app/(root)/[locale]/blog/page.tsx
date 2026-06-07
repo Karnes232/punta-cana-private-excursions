@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { CtaBanner } from "@/components/HomePage/CtaBanner/CtaBanner";
 import {
   getBlogPage,
   getBlogArticles,
@@ -52,7 +53,7 @@ export default async function BlogIndex({
   return (
     <>
       <PageHero
-        eyebrow={isEs ? "Revista" : "Journal"}
+        eyebrow={page?.heroEyebrow?.[lk] || (isEs ? "Revista" : "Journal")}
         headline={
           page?.heroHeadline?.[lk] ??
           (isEs
@@ -139,6 +140,24 @@ export default async function BlogIndex({
           )}
         </div>
       </section>
+
+      <CtaBanner
+        eyebrow={page?.ctaEyebrow?.[lk] || undefined}
+        headline={
+          page?.ctaHeadline?.[lk] ??
+          (isEs
+            ? "¿Listo para vivirlo en persona?"
+            : "Done reading? Let's plan the real thing.")
+        }
+        subheadline={page?.ctaSubheadline?.[lk]}
+        primaryCtaText={
+          page?.ctaButtonText?.[lk] ??
+          (isEs ? "Hablar con conserjería" : "Talk to concierge")
+        }
+        primaryCtaHref={page?.ctaButtonHref ?? "/contact"}
+        secondaryCtaText={page?.ctaSecondaryButtonText?.[lk]}
+        secondaryCtaHref={page?.ctaSecondaryButtonHref}
+      />
     </>
   );
 }

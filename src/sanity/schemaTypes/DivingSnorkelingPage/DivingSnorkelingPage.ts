@@ -20,6 +20,7 @@ export const divingSnorkelingPage = defineType({
     { name: "intro", title: "Intro Section" },
     { name: "excursionSections", title: "Excursion Sections" },
     { name: "trust", title: "Why Book With Us" },
+    { name: "faq", title: "FAQ" },
     { name: "cta", title: "CTA Section" },
     { name: "seo", title: "SEO" },
   ],
@@ -301,6 +302,69 @@ export const divingSnorkelingPage = defineType({
         },
       ],
       validation: (rule) => rule.max(4),
+    }),
+
+    // =========================================================================
+    // FAQ
+    // =========================================================================
+
+    defineField({
+      name: "faqEyebrow",
+      title: "FAQ Eyebrow / Kicker",
+      type: "localizedString",
+      description:
+        'Small uppercase label above the heading. e.g. "Frequently asked"',
+      group: "faq",
+    }),
+
+    defineField({
+      name: "faqHeading",
+      title: "FAQ Heading",
+      type: "localizedString",
+      description: 'e.g. "Diving questions, answered."',
+      group: "faq",
+    }),
+
+    defineField({
+      name: "faqItems",
+      title: "FAQ Items",
+      type: "array",
+      description: "Diving-specific questions shown as an accordion.",
+      group: "faq",
+      of: [
+        {
+          type: "object",
+          name: "faqItem",
+          title: "FAQ Item",
+          fields: [
+            defineField({
+              name: "question",
+              title: "Question",
+              type: "localizedString",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "answer",
+              title: "Answer",
+              type: "localizedText",
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: { title: "question.en" },
+          },
+        },
+      ],
+      validation: (rule) => rule.max(8),
+    }),
+
+    defineField({
+      name: "faqCtaText",
+      title: "FAQ Link Text",
+      type: "localizedString",
+      description:
+        'Text for the link to the FAQ page shown below the questions. e.g. "View all FAQs"',
+      group: "faq",
     }),
 
     // =========================================================================

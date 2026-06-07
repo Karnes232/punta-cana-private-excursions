@@ -1,5 +1,8 @@
 import { client } from "@/sanity/lib/client";
-import { LocalizedField } from "../GeneralLayout/generalLayoutQuery";
+import {
+  LocalizedField,
+  type LocalizedBlockContent,
+} from "../GeneralLayout/generalLayoutQuery";
 
 export interface ExcursionsPage {
   _id: string;
@@ -17,12 +20,24 @@ export interface ExcursionsPage {
     hotspot?: { x: number; y: number };
     crop?: { top: number; bottom: number; left: number; right: number };
   };
+  heroEyebrow: LocalizedField;
   heroHeadline: LocalizedField;
   heroSubheadline: LocalizedField;
+  introEyebrow: LocalizedField;
+  introHeadline: LocalizedField;
+  introBody: LocalizedBlockContent;
+  introImage: {
+    asset: { url: string; metadata: { lqip?: string } };
+    hotspot?: { x: number; y: number };
+    crop?: { top: number; bottom: number; left: number; right: number };
+  } | null;
+  outroHeading: LocalizedField;
+  outroBody: LocalizedBlockContent;
+  ctaEyebrow: LocalizedField;
   ctaHeadline: LocalizedField;
-  ctaDescription: LocalizedField;
-  ctaWhatsappButtonText: LocalizedField;
-  ctaContactButtonText: LocalizedField;
+  ctaSubheadline: LocalizedField;
+  ctaButtonText: LocalizedField;
+  ctaButtonHref: string;
 }
 
 export const excursionsPageQuery = `*[_type == "excursionsPage"][0] {
@@ -41,12 +56,24 @@ export const excursionsPageQuery = `*[_type == "excursionsPage"][0] {
         hotspot,
         crop
     },
+    heroEyebrow,
     heroHeadline,
     heroSubheadline,
+    introEyebrow,
+    introHeadline,
+    introBody,
+    introImage {
+        asset-> { url, metadata { lqip } },
+        hotspot,
+        crop
+    },
+    outroHeading,
+    outroBody,
+    ctaEyebrow,
     ctaHeadline,
-    ctaDescription,
-    ctaWhatsappButtonText,
-    ctaContactButtonText,
+    ctaSubheadline,
+    ctaButtonText,
+    ctaButtonHref,
 }`;
 
 export async function getExcursionsPage(): Promise<ExcursionsPage | null> {

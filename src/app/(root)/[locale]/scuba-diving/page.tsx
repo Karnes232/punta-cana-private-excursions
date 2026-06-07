@@ -5,6 +5,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { BlockContent } from "@/components/BlockContent/BlockContent";
+import { FaqPreview } from "@/components/HomePage/FaqPreview/FaqPreview";
 import { CtaBanner } from "@/components/HomePage/CtaBanner/CtaBanner";
 import {
   getDivingSnorkelingPage,
@@ -251,6 +252,30 @@ export default async function ScubaDivingHub({
             </div>
           </div>
         </section>
+      )}
+
+      {/* FAQ */}
+      {page?.faqItems && page.faqItems.length > 0 && (
+        <FaqPreview
+          eyebrow={
+            page.faqEyebrow?.[lk] ||
+            (isEs ? "Preguntas frecuentes" : "Frequently asked")
+          }
+          heading={
+            page.faqHeading?.[lk] ||
+            (isEs
+              ? "Preguntas de buceo, respondidas."
+              : "Diving questions, answered.")
+          }
+          faqs={page.faqItems.map((f) => ({
+            question: getLocalized(f.question, locale),
+            answer: getLocalized(f.answer, locale),
+          }))}
+          ctaText={
+            page.faqCtaText?.[lk] ||
+            (isEs ? "Ver todas las preguntas" : "View all FAQs")
+          }
+        />
       )}
 
       <CtaBanner

@@ -7,6 +7,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 // =============================================================================
 
 export interface BlogPageData {
+  heroEyebrow: LocalizedField;
   heroHeadline: LocalizedField;
   heroSubheadline: LocalizedField;
   heroImage: {
@@ -14,6 +15,13 @@ export interface BlogPageData {
     hotspot?: { x: number; y: number };
     crop?: { top: number; bottom: number; left: number; right: number };
   } | null;
+  ctaEyebrow: LocalizedField;
+  ctaHeadline: LocalizedField;
+  ctaSubheadline: LocalizedField;
+  ctaButtonText: LocalizedField;
+  ctaButtonHref: string;
+  ctaSecondaryButtonText: LocalizedField;
+  ctaSecondaryButtonHref: string;
 }
 
 export interface BlogCategoryRef {
@@ -69,13 +77,21 @@ export interface BlogCategoryItem {
 // =============================================================================
 
 const blogPageQuery = /* groq */ `*[_type == "blogPage"][0] {
+  heroEyebrow,
   heroHeadline,
   heroSubheadline,
   heroImage {
     asset-> { url, metadata { lqip } },
     hotspot,
     crop
-  }
+  },
+  ctaEyebrow,
+  ctaHeadline,
+  ctaSubheadline,
+  ctaButtonText,
+  ctaButtonHref,
+  ctaSecondaryButtonText,
+  ctaSecondaryButtonHref
 }`;
 
 const featuredImageFragment = /* groq */ `featuredImage {

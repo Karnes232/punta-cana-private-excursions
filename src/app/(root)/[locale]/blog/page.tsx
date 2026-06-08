@@ -4,9 +4,12 @@ import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { CtaBanner } from "@/components/HomePage/CtaBanner/CtaBanner";
+import { BlogFilterBar } from "@/components/BlogPage/BlogFilterBar";
 import {
   getBlogPage,
   getBlogArticles,
+  getBlogCategories,
+  getBlogLanguages,
   getBlogPageSeo,
 } from "@/sanity/queries/Blog/Blog";
 import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
@@ -39,16 +42,48 @@ export async function generateMetadata({
 
 export default async function BlogIndex({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ lang?: string; category?: string }>;
 }) {
   const { locale } = await params;
-  const [page, articles] = await Promise.all([
-    getBlogPage().catch(() => null),
-    getBlogArticles(locale).catch(() => []),
-  ]);
+  const sp = await searchParams;
   const lk = locale as keyof LocalizedField;
   const isEs = locale === "es";
+
+  const [page, languages, allCategories] = await Promise.all([
+    getBlogPage().catch(() => null),
+    getBlogLanguages().catch(() => [] as string[]),
+    getBlogCategories().catch(() => []),
+  ]);
+
+  // Which language's posts to show: ?lang if valid, else the site locale,
+  // else the first available language.
+  const activeLang =
+    sp.lang && languages.includes(sp.lang)
+      ? sp.lang
+      : languages.includes(locale)
+        ? locale
+        : (languages[0] ?? locale);
+
+  const articles = await getBlogArticles(activeLang).catch(() => []);
+
+  // Category tabs — only categories with posts in the active language.
+  const categoryTabs = allCategories
+    .map((cat) => ({
+      slug: cat.slug,
+      title: cat.title?.[lk] ?? cat.title?.en ?? "",
+      count: articles.filter((a) => a.category?.slug === cat.slug).length,
+    }))
+    .filter((cat) => cat.count > 0);
+
+  const activeCategory = categoryTabs.some((c) => c.slug === sp.category)
+    ? (sp.category as string)
+    : null;
+  const visibleArticles = activeCategory
+    ? articles.filter((a) => a.category?.slug === activeCategory)
+    : articles;
 
   return (
     <>
@@ -75,13 +110,23 @@ export default async function BlogIndex({
 
       <section className="section-white py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-          {articles.length === 0 ? (
+          {articles.length > 0 && (
+            <BlogFilterBar
+              categories={categoryTabs}
+              activeCategory={activeCategory}
+              totalCount={articles.length}
+              allLabel={isEs ? "Todas" : "All"}
+              languages={languages}
+              activeLang={activeLang}
+            />
+          )}
+          {visibleArticles.length === 0 ? (
             <p className="text-center text-gray italic">
               {isEs ? "Próximos artículos en camino." : "Articles coming soon."}
             </p>
           ) : (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {articles.map((a, i) => {
+              {visibleArticles.map((a, i) => {
                 const date = a.publishedAt
                   ? new Date(a.publishedAt).toLocaleDateString(
                       locale === "es" ? "es-ES" : "en-US",

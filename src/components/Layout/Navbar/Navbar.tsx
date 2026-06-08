@@ -180,12 +180,21 @@ export function Navbar({ locale, logo, navLinks, navCtaButton }: NavbarProps) {
   // On slug pages the switcher must target the OTHER locale's translated slug
   // (registered via LocaleSwitchContext); elsewhere it reuses the pathname,
   // which next-intl re-localizes for the target locale.
+  //
+  // The alternates context is populated client-side (a useEffect on the page),
+  // so it's null during SSR / first render. On a dynamic route `usePathname()`
+  // can return the unresolved template (e.g. "/blog/[slug]"); handing that to
+  // <Link> without a `slug` param throws. Until the alternates arrive, fall
+  // back to the section index (e.g. "/blog") instead of the raw template.
+  const isDynamicTemplate = pathname.includes("[");
   const switchHref = switchAlternates
     ? {
         pathname: switchAlternates.pathname,
         params: { slug: switchAlternates.slugs[otherLocale] },
       }
-    : staticHref(pathname);
+    : isDynamicTemplate
+      ? staticHref(pathname.replace(/\/\[[^/]+\].*$/, "") || "/")
+      : staticHref(pathname);
 
   return (
     <header

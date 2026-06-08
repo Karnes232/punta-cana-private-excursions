@@ -146,6 +146,8 @@ const categoriesQuery = /* groq */ `*[_type == "blogCategory"] | order(sortOrder
   _id, "slug": slug.current, title, sortOrder
 }`;
 
+const blogLanguagesQuery = /* groq */ `array::unique(*[_type == "blogArticle" && defined(language)].language)`;
+
 // =============================================================================
 // Fetch functions
 // =============================================================================
@@ -164,6 +166,12 @@ export async function getBlogArticles(language?: string, category?: string): Pro
 
 export async function getBlogCategories(): Promise<BlogCategoryItem[]> {
   return client.fetch<BlogCategoryItem[]>(categoriesQuery);
+}
+
+/** Distinct languages that have at least one published article. */
+export async function getBlogLanguages(): Promise<string[]> {
+  const langs = await client.fetch<string[] | null>(blogLanguagesQuery);
+  return Array.isArray(langs) ? langs : [];
 }
 
 export async function getBlogArticle(slug: string): Promise<BlogArticleFull | null> {

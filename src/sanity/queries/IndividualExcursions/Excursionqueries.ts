@@ -59,9 +59,6 @@ export interface ExcursionFaqItem {
 export interface RelatedExcursion {
   _id: string;
   title: LocalizedField;
-  slug: {
-    current: string;
-  };
   localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   price: number;
@@ -99,9 +96,6 @@ export interface IndividualExcursion {
 
   // Section 2: Title + Summary
   title: LocalizedField;
-  slug: {
-    current: string;
-  };
   localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   badge: LocalizedField | null;
@@ -193,9 +187,6 @@ export interface IndividualExcursion {
 export interface ExcursionListItem {
   _id: string;
   title: LocalizedField;
-  slug: {
-    current: string;
-  };
   localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   price: number;
@@ -311,7 +302,6 @@ export const individualExcursionQuery = `*[_type == "excursion" && ${SLUG_MATCH}
     relatedExcursions[]-> {
         _id,
         title,
-        slug,
         localizedSlug,
         shortSummary,
         price,
@@ -342,7 +332,6 @@ export const individualExcursionQuery = `*[_type == "excursion" && ${SLUG_MATCH}
 export const excursionListQuery = `*[_type == "excursion"] | order(sortOrder asc) {
     _id,
     title,
-    slug,
     localizedSlug,
     shortSummary,
     price,
@@ -369,15 +358,14 @@ export const excursionListQuery = `*[_type == "excursion"] | order(sortOrder asc
     }
 }`;
 
-export const excursionSlugsQuery = `*[_type == "excursion" && (defined(slug.current) || defined(localizedSlug.en.current))] {
-    "en": coalesce(localizedSlug.en.current, slug.current),
-    "es": coalesce(localizedSlug.es.current, localizedSlug.en.current, slug.current)
+export const excursionSlugsQuery = `*[_type == "excursion" && defined(localizedSlug.en.current)] {
+    "en": localizedSlug.en.current,
+    "es": coalesce(localizedSlug.es.current, localizedSlug.en.current)
 }`;
 
 export const featuredExcursionsQuery = `*[_type == "excursion" && isFeatured == true] | order(sortOrder asc) [0...3] {
     _id,
     title,
-    slug,
     localizedSlug,
     shortSummary,
     price,

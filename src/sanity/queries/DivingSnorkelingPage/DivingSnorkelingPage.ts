@@ -34,7 +34,6 @@ interface FaqItem {
 export interface DivingExcursionCard {
   _id: string;
   title: LocalizedString;
-  slug: { current: string };
   localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedText;
   heroImage: {
@@ -95,7 +94,6 @@ export interface DivingSnorkelingPageData {
 const excursionCardProjection = /* groq */ `{
   _id,
   title,
-  slug,
   localizedSlug,
   shortSummary,
   heroImage {

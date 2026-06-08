@@ -43,26 +43,6 @@ export const divingExcursion = defineType({
     }),
 
     defineField({
-      name: "slug",
-      title: "Slug (legacy)",
-      type: "slug",
-      description:
-        "Deprecated — superseded by the per-language URL slug above. Kept temporarily so old links keep resolving.",
-      group: "content",
-      readOnly: true,
-      options: {
-        source: "title.en",
-        maxLength: 96,
-        slugify: (input: string) =>
-          input
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .replace(/[^\w-]+/g, "")
-            .slice(0, 96),
-      },
-    }),
-
-    defineField({
       name: "externalBookingUrl",
       title: "External Booking URL",
       type: "url",

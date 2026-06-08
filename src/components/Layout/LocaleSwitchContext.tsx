@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -31,8 +32,15 @@ const LocaleSwitchContext = createContext<LocaleSwitchContextValue | null>(null)
 export function LocaleSwitchProvider({ children }: { children: ReactNode }) {
   const [alternates, setAlternates] =
     useState<LocaleSwitchAlternates | null>(null);
+  // Memoize so the context value keeps a stable identity across renders
+  // (setAlternates from useState is already stable). Without this, every
+  // provider render hands consumers a new object.
+  const value = useMemo(
+    () => ({ alternates, setAlternates }),
+    [alternates],
+  );
   return (
-    <LocaleSwitchContext.Provider value={{ alternates, setAlternates }}>
+    <LocaleSwitchContext.Provider value={value}>
       {children}
     </LocaleSwitchContext.Provider>
   );
@@ -49,16 +57,20 @@ export function useLocaleSwitch(): LocaleSwitchAlternates | null {
  * falls back to plain pathname switching.
  */
 export function SetLocaleAlternates(props: LocaleSwitchAlternates) {
-  const ctx = useContext(LocaleSwitchContext);
+  // Depend on the stable setter, NOT the whole context object. The context
+  // value's identity can change between renders; depending on it here would
+  // re-run the effect every render and (because we set a fresh object each
+  // time) spin into an infinite update loop.
+  const setAlternates = useContext(LocaleSwitchContext)?.setAlternates;
   const { pathname } = props;
   const en = props.slugs.en;
   const es = props.slugs.es;
 
   useEffect(() => {
-    if (!ctx) return;
-    ctx.setAlternates({ pathname, slugs: { en, es } });
-    return () => ctx.setAlternates(null);
-  }, [ctx, pathname, en, es]);
+    if (!setAlternates) return;
+    setAlternates({ pathname, slugs: { en, es } });
+    return () => setAlternates(null);
+  }, [setAlternates, pathname, en, es]);
 
   return null;
 }

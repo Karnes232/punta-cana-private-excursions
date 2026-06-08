@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
-    "seed": "tsx src/sanity/seed/seedAll.ts"
+    "seed": "tsx src/sanity/seed/seedAll.ts",
+    "seed:blog": "tsx src/sanity/seed/seedBlog.ts",
+    "seed:blog:ml": "tsx src/sanity/seed/seedBlogMultilang.ts"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^9.2.0",

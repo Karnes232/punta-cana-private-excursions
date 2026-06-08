@@ -37,7 +37,6 @@ export interface DivingFaqItem {
 export interface RelatedDivingExcursion {
   _id: string;
   title: LocalizedField;
-  slug: { current: string };
   localizedSlug?: LocalizedSlug | null;
   shortSummary: LocalizedField;
   price: number;
@@ -60,7 +59,6 @@ export interface IndividualDivingExcursion {
 
   // Content
   title: LocalizedField;
-  slug: { current: string };
   localizedSlug?: LocalizedSlug | null;
   externalBookingUrl: string;
   shortSummary: LocalizedField;
@@ -176,7 +174,6 @@ export const individualDivingExcursionQuery = `*[_type == "divingExcursion" && $
   relatedExcursions[]-> {
     _id,
     title,
-    slug,
     localizedSlug,
     shortSummary,
     price,
@@ -191,9 +188,9 @@ export const individualDivingExcursionQuery = `*[_type == "divingExcursion" && $
   seo
 }`;
 
-export const divingExcursionSlugsQuery = `*[_type == "divingExcursion" && (defined(slug.current) || defined(localizedSlug.en.current))] {
-  "en": coalesce(localizedSlug.en.current, slug.current),
-  "es": coalesce(localizedSlug.es.current, localizedSlug.en.current, slug.current)
+export const divingExcursionSlugsQuery = `*[_type == "divingExcursion" && defined(localizedSlug.en.current)] {
+  "en": localizedSlug.en.current,
+  "es": coalesce(localizedSlug.es.current, localizedSlug.en.current)
 }`;
 
 // =============================================================================

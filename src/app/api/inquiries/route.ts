@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
+import { checkBotId } from "botid/server";
 import { Resend } from "resend";
 import { OperatorInquiryEmail } from "@/lib/email/inquiryEmail";
 import { OPERATOR_EMAIL_SUBJECT_PREFIX } from "@/lib/seo/constants";
+import { looksLikeSpam } from "@/lib/spam";
+import { recordFormSubmission } from "@/lib/supabase/server";
 
 interface InquiryPayload {
   excursionTitle: string;
@@ -38,6 +41,30 @@ export async function POST(request: Request) {
   if (!isValid(payload)) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
+
+  // Bot gate (Vercel BotID — inert in local dev, active on Vercel).
+  const { isBot } = await checkBotId();
+  if (isBot) {
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
+
+  // Spam gate — silently drop (return a success shape so bots get no signal),
+  // skipping both persistence and email.
+  if (looksLikeSpam(payload)) {
+    return NextResponse.json({ ok: true });
+  }
+
+  // Persist the submission (best-effort, never blocks). excursionTitle → excursion.
+  await recordFormSubmission({
+    type: "inquiry",
+    locale: payload.locale,
+    name: payload.name,
+    email: payload.email,
+    phone: payload.phone,
+    hotel: payload.hotel,
+    excursion: payload.excursionTitle,
+    message: payload.message,
+  });
 
   const resendKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RESEND_FROM_EMAIL;

@@ -8,6 +8,7 @@ import {
   BookingEmailData,
 } from "@/lib/email/bookingEmails";
 import { OPERATOR_EMAIL_SUBJECT_PREFIX } from "@/lib/seo/constants";
+import { recordBooking } from "@/lib/supabase/server";
 
 interface ExcursionForEmail {
   title: { en?: string; es?: string };
@@ -156,6 +157,28 @@ export async function POST(request: Request) {
 
   const totalPrice = excursion.price * totalGuests;
   const remainingBalance = (totalPrice - Number(captureAmount)).toFixed(2);
+
+  // Persist the confirmed booking (best-effort, never blocks). Upsert on
+  // paypal_order_id means re-POSTing the same order will not duplicate.
+  await recordBooking({
+    paypal_order_id: orderID,
+    excursion_id: excursionId,
+    excursion_title: excursionTitle,
+    locale,
+    customer_name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    hotel: formData.hotel,
+    tour_date: formData.date,
+    time_slot: formData.timeSlot,
+    adults: formData.adults,
+    children: formData.children,
+    deposit_paid: Number(captureAmount),
+    currency: captureCurrency ?? "USD",
+    total_price: totalPrice,
+    remaining_balance: Number(remainingBalance),
+    status: "confirmed",
+  });
 
   const logoUrl = branding?.logoUrl
     ? `${branding.logoUrl}?h=240&fit=max&auto=format`

@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { withBotId } from "botid/next/config";
 
 const nextConfig: NextConfig = {
   images: {
@@ -18,4 +19,4 @@ const nextConfig: NextConfig = {
 };
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
-export default withNextIntl(nextConfig);
+export default withBotId(withNextIntl(nextConfig));

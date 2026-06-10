@@ -8,8 +8,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale;
 
+  // Only en/es have message bundles; fr/de/pt/it fall back to en for chrome
+  // strings while keeping the real locale for date/number formatting.
+  const messageLocale: "en" | "es" = locale === "es" ? "es" : "en";
+
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default,
+    messages: (await import(`../../messages/${messageLocale}.json`)).default,
   };
 });

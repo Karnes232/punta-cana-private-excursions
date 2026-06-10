@@ -16,6 +16,7 @@ import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
 import { buildMetadata } from "@/lib/seo/buildMetadata";
 import type { LocalizedField } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import { hotspotToObjectPosition } from "@/sanity/lib/hotspot";
+import { ALL_LOCALES, type BlogLocale } from "@/i18n/blogLocales";
 
 export async function generateMetadata({
   params,
@@ -28,15 +29,17 @@ export async function generateMetadata({
     getDefaultSeo().catch(() => null),
     getBlogPage().catch(() => null),
   ]);
-  const lk = locale as keyof LocalizedField;
+  // Sanity LocalizedField only has en/es slots; fr/de/pt/it read English.
+  const chromeLocale: "en" | "es" = locale === "es" ? "es" : "en";
 
   return buildMetadata({
     seo: pageSeo?.seo,
     defaults: defaultSeo?.defaultSeo,
-    locale: locale as "en" | "es",
+    locale: locale as BlogLocale,
     href: "/blog",
-    fallbackTitle: page?.heroHeadline?.[lk] ?? "Journal",
-    fallbackDescription: page?.heroSubheadline?.[lk],
+    fallbackTitle: page?.heroHeadline?.[chromeLocale] ?? "Journal",
+    fallbackDescription: page?.heroSubheadline?.[chromeLocale],
+    hreflangLocales: ALL_LOCALES,
   });
 }
 
@@ -45,11 +48,13 @@ export default async function BlogIndex({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ lang?: string; category?: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
-  const lk = locale as keyof LocalizedField;
+  // Sanity LocalizedField only has en/es slots; fr/de/pt/it read English.
+  const chromeLocale: "en" | "es" = locale === "es" ? "es" : "en";
+  const lk: keyof LocalizedField = chromeLocale;
   const isEs = locale === "es";
 
   const [page, languages, allCategories] = await Promise.all([
@@ -58,14 +63,12 @@ export default async function BlogIndex({
     getBlogCategories().catch(() => []),
   ]);
 
-  // Which language's posts to show: ?lang if valid, else the site locale,
-  // else the first available language.
-  const activeLang =
-    sp.lang && languages.includes(sp.lang)
-      ? sp.lang
-      : languages.includes(locale)
-        ? locale
-        : (languages[0] ?? locale);
+  // The URL locale IS the active blog content language. Fall back to the first
+  // available language if the requested one has no posts (shouldn't happen
+  // since middleware only routes fr/de/pt/it for /blog).
+  const activeLang = languages.includes(locale)
+    ? locale
+    : (languages[0] ?? locale);
 
   const articles = await getBlogArticles(activeLang).catch(() => []);
 
@@ -128,10 +131,11 @@ export default async function BlogIndex({
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {visibleArticles.map((a, i) => {
                 const date = a.publishedAt
-                  ? new Date(a.publishedAt).toLocaleDateString(
-                      locale === "es" ? "es-ES" : "en-US",
-                      { year: "numeric", month: "long", day: "numeric" },
-                    )
+                  ? new Date(a.publishedAt).toLocaleDateString(locale, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
                   : "";
                 return (
                   <RevealOnScroll key={a._id} delayMs={(i % 3) * 80}>

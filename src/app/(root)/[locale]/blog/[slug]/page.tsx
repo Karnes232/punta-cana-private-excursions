@@ -10,7 +10,9 @@ import { SetLocaleAlternates } from "@/components/Layout/LocaleSwitchContext";
 import { getDefaultSeo } from "@/sanity/queries/SEO/seoProjection";
 import { buildSingleLanguageMetadata } from "@/lib/seo/buildMetadata";
 import { BlockContent } from "@/components/BlockContent/BlockContent";
+import { BlogArticleLanguageMenu } from "@/components/BlogPage/BlogArticleLanguageMenu";
 import { Link } from "@/i18n/navigation";
+import { ALL_LOCALES, type BlogLocale } from "@/i18n/blogLocales";
 import { hotspotToObjectPosition } from "@/sanity/lib/hotspot";
 
 export async function generateStaticParams({
@@ -36,6 +38,19 @@ export async function generateMetadata({
   ]);
   if (!article) return {};
 
+  // Build per-locale slug map so hreflang points each language at its own URL.
+  const translations = article.translationGroup
+    ? await getBlogArticleTranslations(article.translationGroup, slug).catch(
+        () => [],
+      )
+    : [];
+  const slugsByLocale: Partial<Record<BlogLocale, string>> = {
+    [article.language as BlogLocale]: article.slug,
+  };
+  for (const tr of translations) {
+    slugsByLocale[tr.language as BlogLocale] = tr.slug;
+  }
+
   return buildSingleLanguageMetadata({
     seo: {
       metaTitle: article.seoTitle ?? article.title,
@@ -50,10 +65,12 @@ export async function generateMetadata({
       structuredData: undefined,
     },
     defaults: defaultSeo?.defaultSeo,
-    locale: locale as "en" | "es",
+    locale: locale as BlogLocale,
     href: { pathname: "/blog/[slug]", params: { slug } },
     fallbackTitle: article.title,
     fallbackDescription: article.excerpt,
+    hreflangLocales: ALL_LOCALES,
+    hreflangSlugsByLocale: slugsByLocale,
   });
 }
 
@@ -80,23 +97,41 @@ export default async function BlogArticlePage({
     en: slugByLang.en ?? article.slug,
     es: slugByLang.es ?? article.slug,
   };
+  const langItems = ALL_LOCALES.filter((code) => slugByLang[code]).map(
+    (code) => ({ code, slug: slugByLang[code] }),
+  );
 
   const isEs = locale === "es";
+  // Sanity category titles only have en/es slots; fr/de/pt/it read English.
+  const chromeLocale: "en" | "es" = locale === "es" ? "es" : "en";
   const date = article.publishedAt
-    ? new Date(article.publishedAt).toLocaleDateString(
-        isEs ? "es-ES" : "en-US",
-        { year: "numeric", month: "long", day: "numeric" },
-      )
+    ? new Date(article.publishedAt).toLocaleDateString(locale, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
     : "";
   const categoryLabel = article.category
-    ? article.category.title?.[locale as "en" | "es"] ??
-      article.category.title?.en
+    ? article.category.title?.[chromeLocale] ?? article.category.title?.en
     : "";
 
   return (
     <article>
       <SetLocaleAlternates pathname="/blog/[slug]" slugs={blogSlugs} />
       <header className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-12 pt-16 pb-10 text-center">
+        <div className="flex items-center justify-between gap-4 mb-8 text-left">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-slate hover:text-ocean transition-colors"
+          >
+            <span aria-hidden>←</span>
+            {isEs ? "Volver al Journal" : "Back to Journal"}
+          </Link>
+          <BlogArticleLanguageMenu
+            items={langItems}
+            activeLang={article.language}
+          />
+        </div>
         {categoryLabel && (
           <p className="text-xs uppercase tracking-[0.18em] text-teal font-heading font-semibold mb-4">
             {categoryLabel}

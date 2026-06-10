@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { generateHreflangAlternates, localizedUrl } from "@/i18n/hreflang";
+import {
+  generateHreflangAlternates,
+  localizedUrl,
+  type Locale,
+} from "@/i18n/hreflang";
 import type { AppHref } from "@/i18n/navigation";
 import { getLocalized } from "@/sanity/queries/GeneralLayout/generalLayoutQuery";
 import type {
@@ -8,7 +12,16 @@ import type {
   SeoSingleLanguageData,
 } from "@/sanity/queries/SEO/seoProjection";
 
-type Locale = "en" | "es";
+type ChromeLocale = "en" | "es";
+
+const OG_LOCALES: Record<Locale, string> = {
+  en: "en_US",
+  es: "es_ES",
+  fr: "fr_FR",
+  de: "de_DE",
+  pt: "pt_BR",
+  it: "it_IT",
+};
 
 interface FallbackImage {
   url: string;
@@ -30,6 +43,10 @@ interface BuildMetadataArgs {
   fallbackTitle?: string;
   fallbackDescription?: string;
   fallbackImage?: FallbackImage | null;
+  /** Locales to emit hreflang for. Defaults to en + es. */
+  hreflangLocales?: readonly Locale[];
+  /** For slug routes: per-locale slug overrides for hreflang. */
+  hreflangSlugsByLocale?: Partial<Record<Locale, string>>;
 }
 
 interface BuildSingleLanguageMetadataArgs {
@@ -40,6 +57,8 @@ interface BuildSingleLanguageMetadataArgs {
   fallbackTitle?: string;
   fallbackDescription?: string;
   fallbackImage?: FallbackImage | null;
+  hreflangLocales?: readonly Locale[];
+  hreflangSlugsByLocale?: Partial<Record<Locale, string>>;
 }
 
 const firstNonEmpty = (...values: Array<string | undefined | null>): string | undefined => {
@@ -76,32 +95,42 @@ const robotsFromSeo = (
  * with fallbacks to defaultSeo (generalLayout) and per-page hardcoded fallbacks.
  */
 export function buildMetadata(args: BuildMetadataArgs): Metadata {
-  const { seo, defaults, locale, href, fallbackTitle, fallbackDescription, fallbackImage } = args;
+  const {
+    seo,
+    defaults,
+    locale,
+    href,
+    fallbackTitle,
+    fallbackDescription,
+    fallbackImage,
+    hreflangLocales,
+    hreflangSlugsByLocale,
+  } = args;
+
+  // Sanity LocalizedField has only en/es slots; fr/de/pt/it fall back to en.
+  const chromeLocale: ChromeLocale = locale === "es" ? "es" : "en";
 
   const title = firstNonEmpty(
-    getLocalized(seo?.metaTitle, locale),
+    getLocalized(seo?.metaTitle, chromeLocale),
     fallbackTitle,
-    getLocalized(defaults?.metaTitle, locale),
+    getLocalized(defaults?.metaTitle, chromeLocale),
   );
 
   const description = firstNonEmpty(
-    getLocalized(seo?.metaDescription, locale),
+    getLocalized(seo?.metaDescription, chromeLocale),
     fallbackDescription,
-    getLocalized(defaults?.metaDescription, locale),
+    getLocalized(defaults?.metaDescription, chromeLocale),
   );
 
   const keywordsArr =
-    (locale === "es" ? seo?.keywords?.es : seo?.keywords?.en) ??
-    (locale === "es" ? defaults?.keywords?.es : defaults?.keywords?.en) ??
+    (chromeLocale === "es" ? seo?.keywords?.es : seo?.keywords?.en) ??
+    (chromeLocale === "es" ? defaults?.keywords?.es : defaults?.keywords?.en) ??
     [];
 
-  const ogTitle = firstNonEmpty(
-    getLocalized(seo?.ogTitle, locale),
-    title,
-  );
+  const ogTitle = firstNonEmpty(getLocalized(seo?.ogTitle, chromeLocale), title);
 
   const ogDescription = firstNonEmpty(
-    getLocalized(seo?.ogDescription, locale),
+    getLocalized(seo?.ogDescription, chromeLocale),
     description,
   );
 
@@ -110,7 +139,10 @@ export function buildMetadata(args: BuildMetadataArgs): Metadata {
     (fallbackImage ?? undefined) ??
     seoImageToFallback(defaults?.ogImage);
 
-  const alternates = generateHreflangAlternates(href);
+  const alternates = generateHreflangAlternates(href, {
+    locales: hreflangLocales,
+    slugsByLocale: hreflangSlugsByLocale,
+  });
   const canonical = localizedUrl(href, locale);
 
   const twitterCard = seo?.twitterCard ?? defaults?.twitterCard ?? "summary_large_image";
@@ -127,7 +159,7 @@ export function buildMetadata(args: BuildMetadataArgs): Metadata {
       title: ogTitle,
       description: ogDescription,
       url: canonical,
-      locale: locale === "es" ? "es_ES" : "en_US",
+      locale: OG_LOCALES[locale],
       type: "website",
       images: image
         ? [
@@ -157,23 +189,35 @@ export function buildMetadata(args: BuildMetadataArgs): Metadata {
 export function buildSingleLanguageMetadata(
   args: BuildSingleLanguageMetadataArgs,
 ): Metadata {
-  const { seo, defaults, locale, href, fallbackTitle, fallbackDescription, fallbackImage } = args;
+  const {
+    seo,
+    defaults,
+    locale,
+    href,
+    fallbackTitle,
+    fallbackDescription,
+    fallbackImage,
+    hreflangLocales,
+    hreflangSlugsByLocale,
+  } = args;
+
+  const chromeLocale: ChromeLocale = locale === "es" ? "es" : "en";
 
   const title = firstNonEmpty(
     seo?.metaTitle,
     fallbackTitle,
-    getLocalized(defaults?.metaTitle, locale),
+    getLocalized(defaults?.metaTitle, chromeLocale),
   );
 
   const description = firstNonEmpty(
     seo?.metaDescription,
     fallbackDescription,
-    getLocalized(defaults?.metaDescription, locale),
+    getLocalized(defaults?.metaDescription, chromeLocale),
   );
 
   const keywordsArr =
     seo?.keywords ??
-    (locale === "es" ? defaults?.keywords?.es : defaults?.keywords?.en) ??
+    (chromeLocale === "es" ? defaults?.keywords?.es : defaults?.keywords?.en) ??
     [];
 
   const ogTitle = firstNonEmpty(seo?.ogTitle, title);
@@ -184,7 +228,10 @@ export function buildSingleLanguageMetadata(
     (fallbackImage ?? undefined) ??
     seoImageToFallback(defaults?.ogImage);
 
-  const alternates = generateHreflangAlternates(href);
+  const alternates = generateHreflangAlternates(href, {
+    locales: hreflangLocales,
+    slugsByLocale: hreflangSlugsByLocale,
+  });
   const canonical = localizedUrl(href, locale);
 
   const twitterCard = seo?.twitterCard ?? defaults?.twitterCard ?? "summary_large_image";
@@ -201,7 +248,7 @@ export function buildSingleLanguageMetadata(
       title: ogTitle,
       description: ogDescription,
       url: canonical,
-      locale: locale === "es" ? "es_ES" : "en_US",
+      locale: OG_LOCALES[locale],
       type: "article",
       images: image
         ? [

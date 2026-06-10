@@ -101,7 +101,10 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const generalLayout = await getGeneralLayout().catch(() => null);
-  const typedLocale = locale as "en" | "es";
+  // Site chrome (Navbar/Footer) only ships en/es content; non-chrome locales
+  // fall back to English. The blog routes are the only ones that ever receive
+  // fr/de/pt/it (middleware redirects everything else away).
+  const chromeLocale: "en" | "es" = locale === "es" ? "es" : "en";
 
   return (
     <html
@@ -113,7 +116,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale}>
           <LocaleSwitchProvider>
             <Navbar
-              locale={typedLocale}
+              locale={chromeLocale}
               logo={generalLayout?.logo}
               navLinks={generalLayout?.navLinks}
               navCtaButton={generalLayout?.navCtaButton}
@@ -121,7 +124,7 @@ export default async function LocaleLayout({
             <main className="flex-1">{children}</main>
           </LocaleSwitchProvider>
           <Footer
-            locale={typedLocale}
+            locale={chromeLocale}
             logo={generalLayout?.logoAlt ?? generalLayout?.logo}
             companyName={generalLayout?.companyName}
             tagline={generalLayout?.tagline}

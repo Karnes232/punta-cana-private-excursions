@@ -49,7 +49,7 @@ export function BlogFilterBar({
       {/* Category pills */}
       <div className="flex flex-wrap gap-2">
         <Link
-          href={{ pathname: "/blog", query: { lang: activeLang } }}
+          href="/blog"
           scroll={false}
           className={pillClasses(activeCategory === null)}
         >
@@ -63,7 +63,7 @@ export function BlogFilterBar({
               key={cat.slug}
               href={{
                 pathname: "/blog",
-                query: { lang: activeLang, category: cat.slug },
+                query: { category: cat.slug },
               }}
               scroll={false}
               className={pillClasses(active)}

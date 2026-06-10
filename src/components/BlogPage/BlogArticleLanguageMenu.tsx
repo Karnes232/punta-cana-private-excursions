@@ -9,20 +9,21 @@ import {
 import { Link } from "@/i18n/navigation";
 import { LOCALE_LABELS, type BlogLocale } from "@/i18n/blogLocales";
 
-interface BlogLanguageMenuProps {
-  languages: string[];
+interface BlogArticleLanguageMenuProps {
+  items: { code: BlogLocale; slug: string }[];
   activeLang: string;
 }
 
 /**
- * Compact language picker for the blog index. A single chip (translate icon +
- * current code + chevron) opens a small menu listing every available language
- * by full name — stays compact no matter how many languages exist.
+ * In-article language picker. Same dropdown shell as `BlogLanguageMenu`, but
+ * each item links directly to the translated article's slug instead of toggling
+ * a ?lang= query on the index. Renders nothing when the article has no
+ * translations to offer.
  */
-export function BlogLanguageMenu({
-  languages,
+export function BlogArticleLanguageMenu({
+  items,
   activeLang,
-}: BlogLanguageMenuProps) {
+}: BlogArticleLanguageMenuProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -44,10 +45,12 @@ export function BlogLanguageMenu({
     };
   }, [open]);
 
+  if (items.length <= 1) return null;
+
   const activeLabel = LOCALE_LABELS[activeLang as BlogLocale] ?? activeLang;
 
   return (
-    <div ref={ref} className="relative self-start sm:self-auto">
+    <div ref={ref} className="relative">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -70,26 +73,40 @@ export function BlogLanguageMenu({
           aria-label="Select article language"
           className="absolute right-0 z-30 mt-2 min-w-[11rem] rounded-xl border border-sand-dark bg-white p-1 shadow-card"
         >
-          {languages.map((code) => {
-            const active = code === activeLang;
-            const label = LOCALE_LABELS[code as BlogLocale] ?? code;
+          {items.map((item) => {
+            const active = item.code === activeLang;
+            const label = LOCALE_LABELS[item.code] ?? item.code;
+            const rowClass = `flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+              active
+                ? "text-ocean font-heading font-semibold"
+                : "text-slate hover:bg-sand"
+            }`;
+            if (active) {
+              return (
+                <span
+                  key={item.code}
+                  role="menuitem"
+                  aria-current="true"
+                  className={rowClass}
+                >
+                  {label}
+                  <CheckmarkIcon className="h-4 w-4 flex-none" aria-hidden />
+                </span>
+              );
+            }
             return (
               <Link
-                key={code}
-                href="/blog"
-                locale={code as BlogLocale}
-                scroll={false}
+                key={item.code}
+                href={{
+                  pathname: "/blog/[slug]",
+                  params: { slug: item.slug },
+                }}
+                locale={item.code}
                 role="menuitem"
-                aria-current={active ? "true" : undefined}
                 onClick={() => setOpen(false)}
-                className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
-                  active
-                    ? "text-ocean font-heading font-semibold"
-                    : "text-slate hover:bg-sand"
-                }`}
+                className={rowClass}
               >
                 {label}
-                {active && <CheckmarkIcon className="h-4 w-4 flex-none" aria-hidden />}
               </Link>
             );
           })}
